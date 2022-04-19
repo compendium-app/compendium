@@ -13,7 +13,7 @@ import (
 )
 
 func GetAppSyncClient() (client *appsync.Client, err error) {
-	return GetAppSyncClientWithURL(os.Getenv("APPSYNC_URL"))
+	return GetAppSyncClientWithURL(os.Getenv("COMPENDIUM_GRAPHQL_URL"))
 }
 
 func GetAppSyncClientWithURL(graphqlURL string) (client *appsync.Client, err error) {

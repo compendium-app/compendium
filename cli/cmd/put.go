@@ -54,7 +54,9 @@ func putFile(ctx context.Context, filename string) (err error) {
 
 	var node NodeInput
 	for dec.Decode(&node) == nil {
-		node.Dependencies = []string{}
+		if node.Dependencies == nil {
+			node.Dependencies = []string{}
+		}
 		nodes = append(nodes, node)
 	}
 
