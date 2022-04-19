@@ -21,14 +21,14 @@ resource "aws_appsync_datasource" "dynamo" {
 # }
 
 resource "aws_cloudformation_stack" "sfn-data-source" {
-  name          = "AppSyncSFNDataSource"
+  name          = "CompendiumAppSyncSFNDataSource"
   template_body = <<STACK
 Resources:
   StepFunctionsHttpDataSource:
       Type: AWS::AppSync::DataSource
       Properties:
         ApiId: ${aws_appsync_graphql_api.main.id}
-        Name: AppSyncSFNDataSource
+        Name: CompendiumAppSyncSFNDataSource
         Type: HTTP
         # IAM role defined elsewhere in AWS CloudFormation template
         ServiceRoleArn: ${aws_iam_role.main.arn}
@@ -41,7 +41,7 @@ Resources:
               SigningServiceName: states
 Outputs:
   name: 
-    Value: AppSyncSFNDataSource
+    Value: CompendiumAppSyncSFNDataSource
 STACK
 
   lifecycle {
