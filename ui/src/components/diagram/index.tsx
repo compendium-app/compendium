@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
-import { Network, Node, Edge } from "@lifeomic/react-vis-network";
 // import Graph from "vis-react";
 import { gql, useQuery } from "@apollo/client";
-import { Button } from "antd";
+import { DiagramNetwork, Graph, Node, Edge } from "./network";
 
 const GET_NODE = gql`
   query getNode($id: ID!) {
@@ -26,32 +25,20 @@ const GET_NODE = gql`
   }
 `;
 
-interface Depend {
-  node: Node;
-}
-interface Node {
-  id: string;
-  name: string;
-  dependencies: Depend[];
-  dependants: Depend[];
-}
-interface Edge {
-  id: string;
-  from: string;
-  to: string;
-}
 interface Response {
   node: Node;
 }
-interface Graph {
-  nodes: { [key: string]: Node };
-  edges: { [key: string]: Edge };
+
+interface DiagramProps {
+  node: string;
+  nodeSelected?: (node: string) => void;
 }
 
-export const Diagram = () => {
-  const [node, setNode] = useState("test");
+export const Diagram = (props: DiagramProps) => {
+  const { node: initialNode, nodeSelected } = props;
+  const [node, setNode] = useState(initialNode);
   const [graph, setGraph] = useState<Graph>({ nodes: {}, edges: {} });
-  const { loading, error, data, refetch } = useQuery<Response>(GET_NODE, {
+  useQuery<Response>(GET_NODE, {
     variables: { id: node },
     onCompleted: (data) => {
       const nodes = { ...graph.nodes } as { [key: string]: Node };
@@ -59,31 +46,24 @@ export const Diagram = () => {
       nodes[data.node.id] = data.node;
 
       for (const d of data.node.dependencies) {
+        if (!d.node) continue;
         const from = data.node.id;
         const to = d.node.id;
         const id = `${from}_${to}`;
-        edges[id] = { from, to, id };
+        edges[id] = { from, to, id, length: 200 };
         nodes[d.node.id] = d.node;
       }
       for (const d of data.node.dependants) {
+        if (!d.node) continue;
         const to = data.node.id;
         const from = d.node.id;
         const id = `${from}_${to}`;
-        edges[id] = { from, to, id };
+        edges[id] = { from, to, id, length: 200 };
         nodes[d.node.id] = d.node;
       }
 
       setGraph({ nodes, edges });
     },
-  });
-  const networkRef = useRef();
-  useEffect(() => {
-    if (networkRef.current) {
-      (networkRef.current as any).network.on("click", (event: any) => {
-        console.log("=>", event.nodes[0]);
-        setNode(event.nodes[0]);
-      });
-    }
   });
   return (
     <>
@@ -105,22 +85,15 @@ export const Diagram = () => {
         ))}
       </ul> */}
 
-      <Network
-        ref={networkRef}
-        options={{
-          width: "100%",
-          height: "100%",
-          layout: { randomSeed: 2000 },
-          edges: { arrows: { to: { enabled: true } } },
+      <DiagramNetwork
+        graph={graph}
+        nodeSelected={(node) => {
+          setNode(node);
+          if (nodeSelected) {
+            nodeSelected(node);
+          }
         }}
-      >
-        {Object.values(graph.nodes).map((n) => (
-          <Node key={n.id} id={n.id} label={n.name} />
-        ))}
-        {Object.values(graph.edges).map((e) => (
-          <Edge key={e.id} id={e.id} from={e.from} to={e.to} />
-        ))}
-      </Network>
+      />
     </>
   );
 };

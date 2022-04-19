@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-
+import { BrowserRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 
 import { createAuthLink, AUTH_TYPE, AuthOptions } from "aws-appsync-auth-link";
@@ -17,14 +17,15 @@ import {
   ApolloLink,
 } from "@apollo/client";
 
-const url =
-  "https://bkqxffwxfvcw3jubb6fhqsydui.appsync-api.eu-central-1.amazonaws.com/graphql";
+console.log(process.env);
+const url = process.env.REACT_APP_COMPENDIUM_GRAPHQL_URL as string;
 const region = "eu-central-1";
 const auth = {
   type: AUTH_TYPE.AWS_IAM,
   credentials: {
     accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.REACT_APP_AWS_SESSION_TOKEN,
   },
 } as AuthOptions;
 const httpLink = createHttpLink({ uri: url });
@@ -45,9 +46,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
