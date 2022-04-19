@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"io/ioutil"
 
 	"github.com/jakubknejzlik/compendium/utils"
@@ -52,13 +53,19 @@ func putFile(ctx context.Context, filename string) (err error) {
 
 	dec := yaml.NewDecoder(bytes.NewReader(data))
 
-	var node NodeInput
-	for dec.Decode(&node) == nil {
+	for {
+		var node NodeInput
+		err = dec.Decode(&node)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return
+		}
 		if node.Dependencies == nil {
 			node.Dependencies = []string{}
 		}
 		nodes = append(nodes, node)
-		node = NodeInput{}
 	}
 
 	client, err := utils.GetAppSyncClient()
