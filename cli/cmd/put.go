@@ -58,6 +58,7 @@ func putFile(ctx context.Context, filename string) (err error) {
 			node.Dependencies = []string{}
 		}
 		nodes = append(nodes, node)
+		node = NodeInput{}
 	}
 
 	client, err := utils.GetAppSyncClient()
