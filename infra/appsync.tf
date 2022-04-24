@@ -18,10 +18,12 @@ type NodeVersion {
 }
 type Dependency {
   dependencyId: ID!
+  dependantVersion: String!
   nodeVersions: [NodeVersion!]!
 }
 type Dependant {
   dependantId: ID!
+  dependantVersion: String!
   nodeVersions: [NodeVersion!]!
 }
 input NodeInput {

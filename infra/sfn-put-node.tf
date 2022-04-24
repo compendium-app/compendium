@@ -76,6 +76,9 @@ resource "aws_sfn_state_machine" "put-node" {
                       },
                       "dependantId":{
                         "S.$": "States.Format('NODE|{}',$.node.id)"
+                      },
+                      "dependantVersion":{
+                        "S.$": "$$.Execution.StartTime"
                       }
                     }
                   },

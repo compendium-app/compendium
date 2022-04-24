@@ -1,22 +1,14 @@
 import React, { useEffect, useRef } from "react";
 
 import { Network, Node, Edge } from "@lifeomic/react-vis-network";
+import { NodeVersion } from ".";
 
-export interface Depend {
-  nodeVersions: NodeVersion[];
-}
-export interface NodeVersion {
-  id: string;
-  name: string;
-  version: string;
-  dependencies: Depend[];
-  dependants: Depend[];
-}
 export interface Edge {
   id: string;
   from: string;
   to: string;
   length: number;
+  dashed: boolean;
 }
 export interface Graph {
   nodes: { [key: string]: NodeVersion };
@@ -61,6 +53,7 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
             from={e.from}
             to={e.to}
             length={e.length}
+            dashes={e.dashed}
           />
         ))}
       </Network>

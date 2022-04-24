@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // import Graph from "vis-react";
 import { gql, useQuery } from "@apollo/client";
-import { DiagramNetwork, Graph, NodeVersion, Edge } from "./network";
+import { DiagramNetwork, Graph, Edge } from "./network";
 
 const GET_NODE = gql`
   query getNode($id: ID!) {
@@ -11,6 +11,7 @@ const GET_NODE = gql`
       name
       version
       dependencies {
+        dependantVersion
         nodeVersions {
           id
           name
@@ -18,6 +19,7 @@ const GET_NODE = gql`
         }
       }
       dependants {
+        dependantVersion
         nodeVersions {
           id
           name
@@ -27,6 +29,18 @@ const GET_NODE = gql`
     }
   }
 `;
+
+export interface Depend {
+  dependantVersion: string;
+  nodeVersions: NodeVersion[];
+}
+export interface NodeVersion {
+  id: string;
+  name: string;
+  version: string;
+  dependencies: Depend[];
+  dependants: Depend[];
+}
 
 interface Response {
   nodeVersions: NodeVersion[];
@@ -55,16 +69,32 @@ export const Diagram = (props: DiagramProps) => {
         const from = node.id;
         const to = dn.id;
         const id = `${from}_${to}`;
-        edges[id] = { from, to, id, length: 200 };
+        edges[id] = { from, to, id, length: 200, dashed: false };
         nodes[dn.id] = dn;
       }
       for (const d of node.dependants) {
         if (d.nodeVersions.length === 0) continue;
         const dn = d.nodeVersions[0];
+
+        console.log(
+          "??",
+          node.id,
+          "...",
+          node.version,
+          " !== ",
+          d.dependantVersion
+        );
+
         const to = node.id;
         const from = dn.id;
         const id = `${from}_${to}`;
-        edges[id] = { from, to, id, length: 200 };
+        edges[id] = {
+          from,
+          to,
+          id,
+          length: 200,
+          dashed: d.dependantVersion !== node.version,
+        };
         nodes[dn.id] = dn;
       }
 
