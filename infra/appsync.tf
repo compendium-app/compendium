@@ -13,18 +13,18 @@ type NodeVersion {
   id: ID!
   name: String!
   version: String!
-  dependencies: [Dependency!]!
-  dependants: [Dependant!]!
+  dependencies(limit: Int = 100): [Dependency!]!
+  dependants(limit: Int = 100): [Dependant!]!
 }
 type Dependency {
   dependencyId: ID!
   dependantVersion: String!
-  nodeVersions: [NodeVersion!]!
+  nodeVersions(limit: Int = 100): [NodeVersion!]!
 }
 type Dependant {
   dependantId: ID!
   dependantVersion: String!
-  nodeVersions: [NodeVersion!]!
+  nodeVersions(limit: Int = 100): [NodeVersion!]!
 }
 input NodeInput {
   id: ID!
@@ -37,7 +37,7 @@ type Execution {
 }
 
 type Query {
-  nodeVersions(id: ID!): [NodeVersion!]!
+  nodeVersions(id: ID!,limit: Int = 100): [NodeVersion!]!
 }
 type Mutation {
   putNodes(nodes: [NodeInput!]!): Execution!

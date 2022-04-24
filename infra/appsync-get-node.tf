@@ -16,7 +16,7 @@ resource "aws_appsync_resolver" "get-node" {
       }
   },
   "scanIndexForward":false,
-  "limit":100,
+  "limit":$util.defaultIfNull($ctx.args.limit,100),
   "consistentRead" : false
 }
 EOF

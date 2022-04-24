@@ -15,6 +15,7 @@ resource "aws_appsync_resolver" "node-dependencies" {
           ":sk" : $util.dynamodb.toDynamoDBJson("DEPENDENCY|NODE|")
       }
   },
+  "limit":$util.defaultIfNull($ctx.args.limit,100),
   "consistentRead" : false
 }
 EOF
