@@ -16,13 +16,13 @@ resource "null_resource" "ui_build" {
     dir_sha1                         = sha1(join("", [for f in fileset("${local.ui_path}/src", "**/*") : filesha1("${local.ui_path}/src/${f}")]))
     REACT_APP_COMPENDIUM_GRAPHQL_URL = aws_appsync_domain_name.main.domain_name
     REACT_APP_AWS_ACCESS_KEY_ID      = aws_iam_access_key.ui.id
-    _REACT_APP_AWS_SECRET_ACCESS_KEY = aws_iam_access_key.ui.secret
+    REACT_APP_AWS_SECRET_ACCESS_KEY  = aws_iam_access_key.ui.secret
   }
 
   provisioner "local-exec" {
     command = "cd ${local.ui_path} && npm run build"
     environment = {
-      REACT_APP_COMPENDIUM_GRAPHQL_URL = aws_appsync_domain_name.main.domain_name
+      REACT_APP_COMPENDIUM_GRAPHQL_URL = "https://${aws_appsync_domain_name.main.domain_name}/graphql"
       REACT_APP_AWS_ACCESS_KEY_ID      = aws_iam_access_key.ui.id
       REACT_APP_AWS_SECRET_ACCESS_KEY  = aws_iam_access_key.ui.secret
     }
