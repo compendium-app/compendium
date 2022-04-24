@@ -2,23 +2,26 @@ import React, { useState } from "react";
 
 // import Graph from "vis-react";
 import { gql, useQuery } from "@apollo/client";
-import { DiagramNetwork, Graph, Node, Edge } from "./network";
+import { DiagramNetwork, Graph, NodeVersion, Edge } from "./network";
 
 const GET_NODE = gql`
   query getNode($id: ID!) {
-    node(id: $id) {
+    nodeVersions(id: $id) {
       id
       name
+      version
       dependencies {
-        node {
+        nodeVersions {
           id
           name
+          version
         }
       }
       dependants {
-        node {
+        nodeVersions {
           id
           name
+          version
         }
       }
     }
@@ -26,7 +29,7 @@ const GET_NODE = gql`
 `;
 
 interface Response {
-  node: Node;
+  nodeVersions: NodeVersion[];
 }
 
 interface DiagramProps {
@@ -41,25 +44,28 @@ export const Diagram = (props: DiagramProps) => {
   useQuery<Response>(GET_NODE, {
     variables: { id: node },
     onCompleted: (data) => {
-      const nodes = { ...graph.nodes } as { [key: string]: Node };
+      const nodes = { ...graph.nodes } as { [key: string]: NodeVersion };
       const edges = { ...graph.edges } as { [key: string]: Edge };
-      nodes[data.node.id] = data.node;
+      const node = data.nodeVersions[0];
+      nodes[node.id] = node;
 
-      for (const d of data.node.dependencies) {
-        if (!d.node) continue;
-        const from = data.node.id;
-        const to = d.node.id;
+      for (const d of node.dependencies) {
+        if (d.nodeVersions.length === 0) continue;
+        const dn = d.nodeVersions[0];
+        const from = node.id;
+        const to = dn.id;
         const id = `${from}_${to}`;
         edges[id] = { from, to, id, length: 200 };
-        nodes[d.node.id] = d.node;
+        nodes[dn.id] = dn;
       }
-      for (const d of data.node.dependants) {
-        if (!d.node) continue;
-        const to = data.node.id;
-        const from = d.node.id;
+      for (const d of node.dependants) {
+        if (d.nodeVersions.length === 0) continue;
+        const dn = d.nodeVersions[0];
+        const to = node.id;
+        const from = dn.id;
         const id = `${from}_${to}`;
         edges[id] = { from, to, id, length: 200 };
-        nodes[d.node.id] = d.node;
+        nodes[dn.id] = dn;
       }
 
       setGraph({ nodes, edges });

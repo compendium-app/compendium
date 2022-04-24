@@ -32,13 +32,16 @@ resource "aws_sfn_state_machine" "put-node" {
                   "S.$": "States.Format('NODE|{}',$.node.id)"
                 },
                 "SK": {
-                  "S.$": "States.Format('NODE|{}',$.node.id)"
+                  "S.$": "States.Format('NODE|{}|{}',$.node.id,$$.Execution.StartTime)"
                 },
                 "id": {
                   "S.$": "$.node.id"
                 },
                 "name": {
                   "S.$": "$.node.name"
+                },
+                "version": {
+                  "S.$": "$$.Execution.StartTime"
                 }
               }
             },
@@ -63,7 +66,7 @@ resource "aws_sfn_state_machine" "put-node" {
                     "TableName": "${aws_dynamodb_table.main.name}",
                     "Item": {
                       "PK": {
-                        "S.$": "States.Format('NODE|{}',$.node.id)"
+                        "S.$": "States.Format('NODE|{}|{}',$.node.id,$$.Execution.StartTime)"
                       },
                       "SK": {
                         "S.$": "States.Format('DEPENDENCY|NODE|{}',$.dependency)"

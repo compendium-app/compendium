@@ -1,7 +1,7 @@
 resource "aws_appsync_resolver" "node-dependants" {
   api_id      = aws_appsync_graphql_api.main.id
   field       = "dependants"
-  type        = "Node"
+  type        = "NodeVersion"
   data_source = aws_appsync_datasource.dynamo.name
 
   request_template = <<EOF

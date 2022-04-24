@@ -3,11 +3,12 @@ import React, { useEffect, useRef } from "react";
 import { Network, Node, Edge } from "@lifeomic/react-vis-network";
 
 export interface Depend {
-  node: Node;
+  nodeVersions: NodeVersion[];
 }
-export interface Node {
+export interface NodeVersion {
   id: string;
   name: string;
+  version: string;
   dependencies: Depend[];
   dependants: Depend[];
 }
@@ -18,7 +19,7 @@ export interface Edge {
   length: number;
 }
 export interface Graph {
-  nodes: { [key: string]: Node };
+  nodes: { [key: string]: NodeVersion };
   edges: { [key: string]: Edge };
 }
 

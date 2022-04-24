@@ -1,7 +1,7 @@
 resource "aws_appsync_resolver" "node-dependencies" {
   api_id      = aws_appsync_graphql_api.main.id
   field       = "dependencies"
-  type        = "Node"
+  type        = "NodeVersion"
   data_source = aws_appsync_datasource.dynamo.name
 
   request_template = <<EOF
@@ -11,7 +11,7 @@ resource "aws_appsync_resolver" "node-dependencies" {
   "query" : {
       "expression" : "PK = :pk and begins_with(SK,:sk)",
       "expressionValues" : {
-          ":pk" : $util.dynamodb.toDynamoDBJson("NODE|$ctx.source.id"),
+          ":pk" : $util.dynamodb.toDynamoDBJson("NODE|$ctx.source.id|$ctx.source.version"),
           ":sk" : $util.dynamodb.toDynamoDBJson("DEPENDENCY|NODE|")
       }
   },
