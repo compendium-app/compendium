@@ -1,6 +1,6 @@
 resource "aws_appsync_datasource" "dynamo" {
   api_id           = aws_appsync_graphql_api.main.id
-  name             = "AppSyncDynamoDBExecution"
+  name             = "CompendiumAppSyncDynamoDBExecution"
   service_role_arn = aws_iam_role.main.arn
   type             = "AMAZON_DYNAMODB"
 

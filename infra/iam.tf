@@ -1,5 +1,5 @@
 resource "aws_iam_role" "main" {
-  name = "project-compendium-shared"
+  name = "${var.name}-shared"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -21,7 +21,7 @@ resource "aws_iam_role" "main" {
   })
 }
 resource "aws_iam_role_policy" "main" {
-  name = "project-compendium-shared"
+  name = "${var.name}-shared"
   role = aws_iam_role.main.id
 
   policy = jsonencode({
@@ -57,8 +57,8 @@ resource "aws_iam_role_policy" "main" {
         ],
         "Effect" : "Allow",
         "Resource" : [
-          "arn:aws:states:eu-central-1:${data.aws_caller_identity.current.account_id}:stateMachine:compendium-*",
-          "arn:aws:states:eu-central-1:${data.aws_caller_identity.current.account_id}:execution:compendium-*:*"
+          "arn:aws:states:eu-central-1:${data.aws_caller_identity.current.account_id}:stateMachine:${var.name}-*",
+          "arn:aws:states:eu-central-1:${data.aws_caller_identity.current.account_id}:execution:${var.name}-*:*"
         ]
       },
     ]

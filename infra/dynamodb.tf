@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "main" {
-  name         = "project-compendium"
+  name         = var.name
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "PK"
   range_key    = "SK"

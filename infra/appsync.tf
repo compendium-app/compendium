@@ -1,5 +1,5 @@
 resource "aws_appsync_graphql_api" "main" {
-  name                = "project-compendium"
+  name                = var.name
   authentication_type = "AWS_IAM"
   xray_enabled        = true
 
