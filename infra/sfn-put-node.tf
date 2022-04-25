@@ -3,6 +3,8 @@ resource "aws_sfn_state_machine" "put-node" {
   role_arn = aws_iam_role.main.arn
   # type     = "EXPRESS"
 
+  tags = var.tags
+
   tracing_configuration {
     enabled = true
   }

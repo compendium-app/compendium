@@ -7,6 +7,9 @@ module "main" {
   source      = "./infra"
   name        = "project-compendium"
   domain_name = var.domain_name
+  tags = {
+    "app" = "compendium"
+  }
 }
 
 provider "aws" {

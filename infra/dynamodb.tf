@@ -4,6 +4,8 @@ resource "aws_dynamodb_table" "main" {
   hash_key     = "PK"
   range_key    = "SK"
 
+  tags = var.tags
+
   attribute {
     name = "PK"
     type = "S"

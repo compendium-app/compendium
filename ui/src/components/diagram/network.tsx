@@ -39,8 +39,24 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
         options={{
           width: "100%",
           height: "100%",
-          layout: { randomSeed: 2000 },
-          edges: { arrows: { to: { enabled: true } } },
+          edges: {
+            arrows: { to: { enabled: true } },
+            smooth: {
+              type: "cubicBezier",
+              forceDirection: "horizontal",
+              // directionInput.value == "UD" || directionInput.value == "DU"
+              //   ? "vertical"
+              //   : "horizontal",
+              roundness: 0.4,
+            },
+          },
+          layout: {
+            randomSeed: 2000,
+            // hierarchical: {
+            //   direction: "UD",
+            // },
+          },
+          physics: { enabled: true },
         }}
       >
         {Object.values(graph.nodes).map((n) => (

@@ -8,6 +8,8 @@ resource "aws_cloudfront_distribution" "ui" {
     origin_id   = local.s3_origin_id
   }
 
+  tags = var.tags
+
   enabled             = true
   is_ipv6_enabled     = true
   comment             = "Compendium UI"
