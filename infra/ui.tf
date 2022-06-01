@@ -2,16 +2,6 @@ locals {
   ui_path = "./ui"
 }
 
-resource "aws_s3_bucket" "ui" {
-  bucket = "${var.name}-ui"
-  tags   = var.tags
-}
-
-resource "aws_s3_bucket_acl" "ui" {
-  bucket = aws_s3_bucket.ui.id
-  acl    = "public-read"
-}
-
 resource "null_resource" "ui_build" {
   triggers = {
     dir_sha1                         = sha1(join("", [for f in fileset("${local.ui_path}/src", "**/*") : filesha1("${local.ui_path}/src/${f}")]))
