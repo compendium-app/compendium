@@ -1,5 +1,5 @@
 data "aws_acm_certificate" "main" {
-  domain      = var.domain_name
+  domain      = var.certificate_name
   provider    = aws.us-east-1
   types       = ["AMAZON_ISSUED"]
   most_recent = true
