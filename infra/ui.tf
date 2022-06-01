@@ -1,5 +1,5 @@
 locals {
-  ui_path = "./ui"
+  ui_path = "${path.module}/../ui"
 }
 
 resource "null_resource" "ui_build" {

@@ -3,10 +3,12 @@ variable "name" {
 }
 
 variable "domain_name" {
-  type = string
+  type    = string
+  default = null
 }
 variable "certificate_name" {
-  type = string
+  type    = string
+  default = null
 }
 
 variable "tags" {
