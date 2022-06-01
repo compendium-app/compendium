@@ -11,7 +11,7 @@ resource "null_resource" "ui_build" {
   }
 
   provisioner "local-exec" {
-    command = "cd ${local.ui_path} && npm run build"
+    command = "cd ${local.ui_path} && npm ci && npm run build"
     environment = {
       REACT_APP_COMPENDIUM_GRAPHQL_URL = "https://${aws_appsync_domain_name.main.domain_name}/graphql"
       REACT_APP_AWS_ACCESS_KEY_ID      = aws_iam_access_key.ui.id
