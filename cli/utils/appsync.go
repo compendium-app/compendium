@@ -32,7 +32,7 @@ func RunAppSyncQuery(ctx context.Context, client *appsync.Client, query string, 
 		return
 	}
 	variables := json.RawMessage(variablesData)
-	fmt.Println("??", string(variablesData))
+	fmt.Println("data:", string(variablesData))
 	res, err := client.Post(graphql.PostRequest{
 		Query:     query,
 		Variables: &variables,
