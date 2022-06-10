@@ -1,6 +1,6 @@
 resource "aws_appsync_domain_name" "main" {
-  domain_name     = "compendium-api.${var.domain_name}"
-  certificate_arn = data.aws_acm_certificate.main.arn
+  domain_name     = var.api_domain_name
+  certificate_arn = var.certificate_arn
 }
 
 resource "aws_appsync_domain_name_api_association" "main" {

@@ -2,11 +2,15 @@ variable "name" {
   type = string
 }
 
-variable "domain_name" {
+variable "ui_domain_name" {
   type    = string
   default = null
 }
-variable "certificate_name" {
+variable "api_domain_name" {
+  type    = string
+  default = null
+}
+variable "certificate_arn" {
   type    = string
   default = null
 }

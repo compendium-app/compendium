@@ -21,7 +21,7 @@ resource "aws_cloudfront_distribution" "ui" {
   #   prefix          = "myprefix"
   # }
 
-  aliases = ["compendium.${var.domain_name}"]
+  aliases = [var.ui_domain_name]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "ui" {
   # }
 
   viewer_certificate {
-    acm_certificate_arn = data.aws_acm_certificate.main.arn
+    acm_certificate_arn = var.certificate_arn
     ssl_support_method  = "sni-only"
   }
 }
