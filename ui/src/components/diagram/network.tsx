@@ -9,6 +9,7 @@ export interface Edge {
   to: string;
   length: number;
   dashed: boolean;
+  label?: string;
 }
 export interface Graph {
   nodes: { [key: string]: DataNode };

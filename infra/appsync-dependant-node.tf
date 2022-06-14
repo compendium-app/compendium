@@ -10,7 +10,7 @@ resource "aws_appsync_resolver" "dependant-node" {
   "operation" : "GetItem",
   "key" : {
       "PK" : $util.dynamodb.toDynamoDBJson("$ctx.source.dependantId"),
-      "SK" : $util.dynamodb.toDynamoDBJson("$ctx.source.dependantId|$ctx.source.dependantVersion")
+      "SK" : $util.dynamodb.toDynamoDBJson("$ctx.source.dependantId")
   },
   "consistentRead" : false
 }

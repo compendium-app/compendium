@@ -11,7 +11,7 @@ resource "aws_appsync_resolver" "node-dependencies" {
   "query" : {
       "expression" : "PK = :pk and begins_with(SK,:sk)",
       "expressionValues" : {
-          ":pk" : $util.dynamodb.toDynamoDBJson("NODE|$ctx.source.id|$ctx.source.version"),
+          ":pk" : $util.dynamodb.toDynamoDBJson("NODE|$ctx.source.id"),
           ":sk" : $util.dynamodb.toDynamoDBJson("DEPENDENCY|NODE|")
       }
   },

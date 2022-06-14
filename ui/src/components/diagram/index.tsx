@@ -92,7 +92,7 @@ export const Diagram = (props: DiagramProps) => {
           to,
           id,
           length: 200,
-          dashed: d.dependantVersion !== dn.version,
+          dashed: false, //d.dependantVersion !== dn.version,
         };
         nodes[dn.id] = dn;
       }

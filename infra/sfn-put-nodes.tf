@@ -34,7 +34,7 @@ resource "aws_sfn_state_machine" "put-nodes" {
                   "S.$": "States.Format('NODE|{}',$.node.id)"
                 },
                 "SK": {
-                  "S.$": "States.Format('NODE|{}|{}',$.node.id,$$.Execution.StartTime)"
+                  "S.$": "States.Format('NODE|{}',$.node.id)"
                 },
                 "id": {
                   "S.$": "$.node.id"
@@ -53,7 +53,6 @@ resource "aws_sfn_state_machine" "put-nodes" {
           "StoreDependencies":{
             "Type":"Map",
             "ItemsPath":"$.node.dependencies",
-            "End":true,
             "Parameters": {
               "dependency.$": "$$.Map.Item.Value",
               "node.$": "$.node"
@@ -68,7 +67,7 @@ resource "aws_sfn_state_machine" "put-nodes" {
                     "TableName": "${aws_dynamodb_table.main.name}",
                     "Item": {
                       "PK": {
-                        "S.$": "States.Format('NODE|{}|{}',$.node.id,$$.Execution.StartTime)"
+                        "S.$": "States.Format('NODE|{}',$.node.id)"
                       },
                       "SK": {
                         "S.$": "States.Format('DEPENDENCY|NODE|{}',$.dependency)"
@@ -88,7 +87,66 @@ resource "aws_sfn_state_machine" "put-nodes" {
                   "End": true
                 }
               }
-            }
+            },
+            "ResultPath":null,
+            "Next":"GetOutdatedDependencies"
+          },
+          "GetOutdatedDependencies":{
+            "Type": "Task",
+            "Resource": "arn:aws:states:::aws-sdk:dynamodb:query",
+            "Parameters": {
+              "TableName": "${aws_dynamodb_table.main.name}",
+              "KeyConditionExpression":"#PK = :PK AND begins_with(#SK,:SKPrefix)",
+              "FilterExpression": "dependantVersion < :version",
+              "ExpressionAttributeNames": {
+                  "#PK" : "PK",
+                  "#SK" : "SK"
+              },
+              "ExpressionAttributeValues": { 
+                ":PK":{
+                  "S.$":"States.Format('NODE|{}',$.node.id)"
+                },
+                ":SKPrefix":{
+                  "S":"DEPENDENCY|NODE|"
+                },
+                ":version":{
+                  "S.$":"$$.Execution.StartTime"
+                }
+              }
+            },
+            "ResultPath":"$.invalidDependencies",
+            "Next": "DeleteOutdatedDependencies"
+          },
+          "DeleteOutdatedDependencies":{
+            "Type":"Map",
+            "ItemsPath":"$.invalidDependencies.Items",
+            "Parameters": {
+              "dependency.$": "$$.Map.Item.Value",
+              "node.$": "$.node"
+            },
+            "Iterator":{
+              "StartAt":"DeleteDependency",
+              "States":{
+                "DeleteDependency":{
+                  "Type": "Task",
+                  "Resource": "arn:aws:states:::dynamodb:deleteItem",
+                  "Parameters": {
+                    "TableName": "${aws_dynamodb_table.main.name}",
+                    "Key": {
+                      "PK": {
+                        "S.$": "$.dependency.PK.S"
+                      },
+                      "SK": {
+                        "S.$": "$.dependency.SK.S"
+                      }
+                    }
+                  },
+                  "ResultPath":null,
+                  "End": true
+                }
+              }
+            },
+            "End":true
           }
         }
       }
