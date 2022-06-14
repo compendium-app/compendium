@@ -13,3 +13,6 @@ destroy:
 	terraform destroy
 sso:
 	aws sso login
+
+build-ui:
+	cd ui && npm ci && npm run build
