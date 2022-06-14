@@ -6,13 +6,13 @@ import { DiagramNetwork, Graph, Edge } from "./network";
 
 const GET_NODE = gql`
   query getNode($id: ID!) {
-    nodeVersions(id: $id) {
+    node(id: $id) {
       id
       name
       version
       dependencies {
         dependantVersion
-        nodeVersions {
+        node {
           id
           name
           version
@@ -20,10 +20,9 @@ const GET_NODE = gql`
       }
       dependants {
         dependantVersion
-        nodeVersions {
+        node {
           id
           name
-          version
         }
       }
     }
@@ -32,9 +31,9 @@ const GET_NODE = gql`
 
 export interface Depend {
   dependantVersion: string;
-  nodeVersions: NodeVersion[];
+  node: Node;
 }
-export interface NodeVersion {
+export interface Node {
   id: string;
   name: string;
   version: string;
@@ -43,7 +42,7 @@ export interface NodeVersion {
 }
 
 interface Response {
-  nodeVersions: NodeVersion[];
+  node: Node;
 }
 
 interface DiagramProps {
@@ -58,14 +57,14 @@ export const Diagram = (props: DiagramProps) => {
   useQuery<Response>(GET_NODE, {
     variables: { id: node },
     onCompleted: (data) => {
-      const nodes = { ...graph.nodes } as { [key: string]: NodeVersion };
+      const nodes = { ...graph.nodes } as { [key: string]: Node };
       const edges = { ...graph.edges } as { [key: string]: Edge };
-      const node = data.nodeVersions[0];
+      const node = data.node;
       nodes[node.id] = node;
 
       for (const d of node.dependencies) {
-        if (d.nodeVersions.length === 0) continue;
-        const dn = d.nodeVersions[0];
+        if (!d.node) continue;
+        const dn = d.node;
         const from = node.id;
         const to = dn.id;
         const id = `${from}_${to}`;
@@ -73,8 +72,8 @@ export const Diagram = (props: DiagramProps) => {
         nodes[dn.id] = dn;
       }
       for (const d of node.dependants) {
-        if (d.nodeVersions.length === 0) continue;
-        const dn = d.nodeVersions[0];
+        if (!d.node) continue;
+        const dn = d.node;
 
         console.log(
           "??",

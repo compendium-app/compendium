@@ -17,7 +17,7 @@ $util.qr($ctx.stash.put("executionId", $util.autoId()))
       "x-amz-target":"AWSStepFunctions.StartExecution"
     },
     "body": {
-      "stateMachineArn": "${aws_sfn_state_machine.put-node.arn}",
+      "stateMachineArn": "${aws_sfn_state_machine.put-nodes.arn}",
       "input": $utils.toJson($utils.toJson($ctx.args))
     }
   }

@@ -17,15 +17,15 @@ import {
   ApolloLink,
 } from "@apollo/client";
 
-console.log(process.env);
-const url = process.env.REACT_APP_COMPENDIUM_GRAPHQL_URL as string;
+const ENV = (window as any).ENV || process.env;
+const url = ENV.REACT_APP_COMPENDIUM_GRAPHQL_URL as string;
 const region = "eu-central-1";
 const auth = {
   type: AUTH_TYPE.AWS_IAM,
   credentials: {
-    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-    sessionToken: process.env.REACT_APP_AWS_SESSION_TOKEN,
+    accessKeyId: ENV.REACT_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: ENV.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    sessionToken: ENV.REACT_APP_AWS_SESSION_TOKEN,
   },
 } as AuthOptions;
 const httpLink = createHttpLink({ uri: url });

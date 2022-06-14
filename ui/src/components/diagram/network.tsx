@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import { Network, Node, Edge } from "@lifeomic/react-vis-network";
-import { NodeVersion } from ".";
+import { Node as DataNode } from ".";
 
 export interface Edge {
   id: string;
@@ -11,7 +11,7 @@ export interface Edge {
   dashed: boolean;
 }
 export interface Graph {
-  nodes: { [key: string]: NodeVersion };
+  nodes: { [key: string]: DataNode };
   edges: { [key: string]: Edge };
 }
 

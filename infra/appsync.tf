@@ -11,7 +11,7 @@ resource "aws_appsync_graphql_api" "main" {
   }
 
   schema = <<EOF
-type NodeVersion {
+type Node {
   id: ID!
   name: String!
   version: String!
@@ -21,12 +21,12 @@ type NodeVersion {
 type Dependency {
   dependencyId: ID!
   dependantVersion: String!
-  nodeVersions(limit: Int = 100): [NodeVersion!]!
+  node: Node
 }
 type Dependant {
   dependantId: ID!
   dependantVersion: String!
-  nodeVersions(limit: Int = 100): [NodeVersion!]!
+  node: Node
 }
 input NodeInput {
   id: ID!
@@ -39,7 +39,7 @@ type Execution {
 }
 
 type Query {
-  nodeVersions(id: ID!,limit: Int = 100): [NodeVersion!]!
+  node(id: ID!): Node
 }
 type Mutation {
   putNodes(nodes: [NodeInput!]!): Execution!

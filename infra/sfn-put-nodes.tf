@@ -1,5 +1,5 @@
-resource "aws_sfn_state_machine" "put-node" {
-  name     = "${var.name}-put-node"
+resource "aws_sfn_state_machine" "put-nodes" {
+  name     = "${var.name}-put-nodes"
   role_arn = aws_iam_role.main.arn
   # type     = "EXPRESS"
 

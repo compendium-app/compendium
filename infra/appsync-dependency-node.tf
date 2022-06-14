@@ -1,6 +1,6 @@
 resource "aws_appsync_resolver" "dependency-node" {
   api_id      = aws_appsync_graphql_api.main.id
-  field       = "nodeVersions"
+  field       = "node"
   type        = "Dependency"
   data_source = aws_appsync_datasource.dynamo.name
 
@@ -16,12 +16,16 @@ resource "aws_appsync_resolver" "dependency-node" {
       }
   },
   "scanIndexForward":false,
-  "limit":100,
+  "limit":1,
   "consistentRead" : false
 }
 EOF
 
   response_template = <<EOF
-      $utils.toJson($context.result.items)
+  #if ($context.result.items.size() == 0)
+    null
+  #else
+    $utils.toJson($context.result.items[0])
+  #end
   EOF
 }
