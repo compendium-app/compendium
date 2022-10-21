@@ -29,10 +29,7 @@ export const RecentNodes = ({ onNodeSelected }: RecentNodesProps) => {
               onNodeSelected(i.id);
             }}
           >
-            <List.Item.Meta
-              title={i.name}
-              description={i.metadata?.description}
-            />
+            <List.Item.Meta title={i.name} />
             <>{moment(i.version).format("LLL")}</>
           </List.Item>
         )}

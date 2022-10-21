@@ -2,7 +2,7 @@ include .env
 export
 
 tfenv:
-	tfenv use 1.1.4
+	tfenv use 1.2.9
 init: tfenv
 	terraform init
 plan:
