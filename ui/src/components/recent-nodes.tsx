@@ -17,7 +17,7 @@ export const RecentNodes = ({ onNodeSelected }: RecentNodesProps) => {
     return <Alert type="error" message={error.message} />;
   }
   return (
-    <Modal title="Recent nodes" open={true} footer={<></>} closable={false}>
+    <Modal title="Recent updates" open={true} footer={<></>} closable={false}>
       <List
         size="small"
         loading={loading}
