@@ -27,44 +27,49 @@ export const NodeDetailDrawer = ({
       {loading && <Spin />}
       {error && <Alert type="error" message={error.message} />}
       {items}
-      <Collapse>
-        <Collapse.Panel
-          key="dependencies"
-          header={`Dependencies (${data?.node?.dependencies.length})`}
-        >
-          <List
-            dataSource={data?.node?.dependencies}
-            renderItem={(i) => (
-              <List.Item key={i.node.id}>
-                <Typography.Link
-                  href="#"
-                  onClick={() => onNodeSelected(i.node.id)}
-                >
-                  {i.node.name}
-                </Typography.Link>
-              </List.Item>
-            )}
-          />
-        </Collapse.Panel>
-        <Collapse.Panel
-          key="dependendants"
-          header={`Dependants (${data?.node?.dependants.length})`}
-        >
-          <List
-            dataSource={data?.node?.dependants}
-            renderItem={(i) => (
-              <List.Item key={i.node.id}>
-                <Typography.Link
-                  href="#"
-                  onClick={() => onNodeSelected(i.node.id)}
-                >
-                  {i.node.name}
-                </Typography.Link>
-              </List.Item>
-            )}
-          />
-        </Collapse.Panel>
-      </Collapse>
+      {data && !data.node && (
+        <Alert type="warning" message={`Node '${nodeId}' not found`} />
+      )}
+      {data?.node && (
+        <Collapse>
+          <Collapse.Panel
+            key="dependencies"
+            header={`Dependencies (${data?.node?.dependencies.length})`}
+          >
+            <List
+              dataSource={data?.node?.dependencies}
+              renderItem={(i) => (
+                <List.Item key={i.node.id}>
+                  <Typography.Link
+                    href="#"
+                    onClick={() => onNodeSelected(i.node.id)}
+                  >
+                    {i.node.name}
+                  </Typography.Link>
+                </List.Item>
+              )}
+            />
+          </Collapse.Panel>
+          <Collapse.Panel
+            key="dependendants"
+            header={`Dependants (${data?.node?.dependants.length})`}
+          >
+            <List
+              dataSource={data?.node?.dependants}
+              renderItem={(i) => (
+                <List.Item key={i.node.id}>
+                  <Typography.Link
+                    href="#"
+                    onClick={() => onNodeSelected(i.node.id)}
+                  >
+                    {i.node.name}
+                  </Typography.Link>
+                </List.Item>
+              )}
+            />
+          </Collapse.Panel>
+        </Collapse>
+      )}
     </Drawer>
   );
 };
