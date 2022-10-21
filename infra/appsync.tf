@@ -14,9 +14,13 @@ resource "aws_appsync_graphql_api" "main" {
 type Node {
   id: ID!
   name: String!
+  metadata: NodeMetadata
   version: String!
   dependencies(limit: Int = 100): [Dependency!]!
   dependants(limit: Int = 100): [Dependant!]!
+}
+type NodeMetadata {
+  description: String
 }
 type Dependency {
   dependencyId: ID!
@@ -31,7 +35,11 @@ type Dependant {
 input NodeInput {
   id: ID!
   name: String!
+  metadata: NodeMetadataInput
   dependencies: [ID!]!
+}
+input NodeMetadataInput {
+  description: String
 }
 
 type Execution {

@@ -17,7 +17,9 @@ resource "aws_appsync_resolver" "query-node" {
 EOF
 
   response_template = <<EOF
-      $utils.toJson($context.result)
+    #set($res = $context.result)
+    $util.qr($res.put("metadata",$util.parseJson($res.metadata)))
+    $util.toJson($res)
   EOF
 }
 

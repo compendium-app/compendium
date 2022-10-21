@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { Alert, List, Modal } from "antd";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import {
   QUERY_RECENT_NODES,
   RecentNodesResult,
@@ -18,25 +17,23 @@ export const RecentNodes = ({ onNodeSelected }: RecentNodesProps) => {
     return <Alert type="error" message={error.message} />;
   }
   return (
-    <Modal title="Recent nodes" visible={true} footer={<></>} closable={false}>
+    <Modal title="Recent nodes" open={true} footer={<></>} closable={false}>
       <List
         size="small"
         loading={loading}
         dataSource={data?.recentNodes || []}
         renderItem={(i) => (
-          <List.Item>
+          <List.Item
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              onNodeSelected(i.id);
+            }}
+          >
             <List.Item.Meta
-              title={
-                <a
-                  onClick={() => {
-                    onNodeSelected(i.id);
-                  }}
-                >
-                  {i.name}
-                </a>
-              }
-              description={<>Updated: {moment(i.version).toLocaleString()}</>}
+              title={i.name}
+              description={i.metadata?.description}
             />
+            <>{moment(i.version).format("LLL")}</>
           </List.Item>
         )}
       />

@@ -1,2 +1,4 @@
 id: test
 name: test
+metadata:
+  description: test

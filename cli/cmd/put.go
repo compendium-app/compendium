@@ -34,9 +34,10 @@ var PutCommand = cli.Command{
 }
 
 type NodeInput struct {
-	ID           string   `json:"id"`
-	Name         string   `json:"name"`
-	Dependencies []string `json:"dependencies"`
+	ID           string                 `json:"id"`
+	Name         string                 `json:"name"`
+	Metadata     map[string]interface{} `json:"metadata"`
+	Dependencies []string               `json:"dependencies"`
 }
 type Execution struct {
 	ExecutionArn string `json:"executionArn"`
@@ -64,6 +65,9 @@ func putFile(ctx context.Context, filename string) (err error) {
 		}
 		if node.Dependencies == nil {
 			node.Dependencies = []string{}
+		}
+		if node.Metadata == nil {
+			node.Metadata = map[string]interface{}{}
 		}
 		nodes = append(nodes, node)
 	}

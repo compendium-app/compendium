@@ -48,6 +48,9 @@ resource "aws_sfn_state_machine" "put-nodes" {
                 "name": {
                   "S.$": "$.node.name"
                 },
+                "metadata": {
+                  "S.$": "States.JsonToString($.node.metadata)"
+                },
                 "version": {
                   "S.$": "$$.Execution.StartTime"
                 }

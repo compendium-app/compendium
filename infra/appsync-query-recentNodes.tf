@@ -22,6 +22,10 @@ resource "aws_appsync_resolver" "query-recentNodes" {
 EOF
 
   response_template = <<EOF
-      $utils.toJson($context.result.items)
+    #set($items = $context.result.items)
+    #foreach ($item in $items)
+      $util.qr($item.put("metadata",$util.parseJson($item.metadata)))
+    #end
+    $utils.toJson($items)
   EOF
 }

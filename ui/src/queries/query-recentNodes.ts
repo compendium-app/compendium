@@ -9,6 +9,9 @@ export const QUERY_RECENT_NODES = gql`
       id
       name
       version
+      metadata {
+        description
+      }
       dependencies {
         dependantVersion
         node {
