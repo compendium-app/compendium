@@ -76,6 +76,7 @@ export const Diagram = (props: DiagramProps) => {
       </ul> */}
 
       <DiagramNetwork
+        selectedNodeIds={[node]}
         graph={graph}
         nodeSelected={(node) => {
           setNode(node);

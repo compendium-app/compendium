@@ -1,12 +1,18 @@
 import { useSearchParams } from "react-router-dom";
 import { Diagram } from "../components/diagram";
+import { NodeDetailDrawer } from "../components/node-detail-drawer";
 import { RecentNodes } from "../components/recent-nodes";
 
 export const IndexPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const setNodeId = (id: string) => {
-    searchParams.set("node", id);
+  const setNodeId = (id: string | null) => {
+    if (id) {
+      searchParams.set("node", id);
+    } else {
+      searchParams.delete("node");
+    }
+
     setSearchParams(searchParams);
   };
 
@@ -21,11 +27,16 @@ export const IndexPage = () => {
     );
   }
   return (
-    <Diagram
-      node={nodeId}
-      nodeSelected={(id) => {
-        setNodeId(id);
-      }}
-    />
+    <>
+      {nodeId && (
+        <NodeDetailDrawer nodeId={nodeId} onClose={() => setNodeId(null)} />
+      )}
+      <Diagram
+        node={nodeId}
+        nodeSelected={(id) => {
+          setNodeId(id);
+        }}
+      />
+    </>
   );
 };

@@ -21,6 +21,11 @@ type Node {
 }
 type NodeMetadata {
   description: String
+  links: [NodeMetadataLink!]
+}
+type NodeMetadataLink {
+  url: String!
+  name: String
 }
 type Dependency {
   dependencyId: ID!
@@ -40,6 +45,11 @@ input NodeInput {
 }
 input NodeMetadataInput {
   description: String
+  links: [NodeMetadataLinkInput!]
+}
+input NodeMetadataLinkInput {
+  url: String!
+  name: String
 }
 
 type Execution {

@@ -16,6 +16,9 @@ export interface Node {
   dependencies: Depend[];
   dependants: Depend[];
 }
+export type QueryNodeResult = { node?: Node };
+
+export const metadataFields = `description links { name url }`;
 
 export const QUERY_NODE = gql`
   query getNode($id: ID!) {
@@ -23,7 +26,7 @@ export const QUERY_NODE = gql`
       id
       name
       metadata {
-        description
+        ${metadataFields}
       }
       version
       dependencies {
@@ -31,8 +34,10 @@ export const QUERY_NODE = gql`
         node {
           id
           name
-          description
           version
+          metadata {
+            ${metadataFields}
+          }
         }
       }
       dependants {
@@ -40,7 +45,9 @@ export const QUERY_NODE = gql`
         node {
           id
           name
-          description
+          metadata {
+            ${metadataFields}
+          }
         }
       }
     }

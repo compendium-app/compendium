@@ -17,18 +17,18 @@ export interface Graph {
 }
 
 interface DiagramNetworkProps {
+  selectedNodeIds: string[];
   graph: Graph;
   nodeSelected?: (node: string) => void;
 }
 
 export const DiagramNetwork = (props: DiagramNetworkProps) => {
-  const { graph, nodeSelected } = props;
+  const { graph, nodeSelected, selectedNodeIds } = props;
 
   const networkRef = useRef();
   useEffect(() => {
     if (networkRef.current) {
       (networkRef.current as any).network.on("click", (event: any) => {
-        console.log("=>", event.nodes[0]);
         if (nodeSelected && event.nodes[0]) nodeSelected(event.nodes[0]);
       });
     }
@@ -51,6 +51,7 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
               roundness: 0.4,
             },
           },
+          // nodes: { color: "green" },
           layout: {
             randomSeed: 2000,
             // hierarchical: {
@@ -60,9 +61,18 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
           physics: { enabled: true },
         }}
       >
-        {Object.values(graph.nodes).map((n) => (
-          <Node key={n.id} id={n.id} label={n.name} />
-        ))}
+        {Object.values(graph.nodes).map((n) => {
+          const color =
+            selectedNodeIds.indexOf(n.id) !== -1 ? "#2B7CE9" : undefined;
+          return (
+            <Node
+              key={`${n.id}_${color}`}
+              id={n.id}
+              label={n.name}
+              color={color}
+            />
+          );
+        })}
         {Object.values(graph.edges).map((e) => (
           <Edge
             key={e.id}

@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { Node } from "./query-node";
+import { metadataFields, Node } from "./query-node";
 
 export type RecentNodesResult = { recentNodes: Node[] };
 
@@ -10,7 +10,7 @@ export const QUERY_RECENT_NODES = gql`
       name
       version
       metadata {
-        description
+        ${metadataFields}
       }
       dependencies {
         dependantVersion
@@ -18,6 +18,9 @@ export const QUERY_RECENT_NODES = gql`
           id
           name
           version
+          metadata {
+            ${metadataFields}
+          }
         }
       }
       dependants {
@@ -25,6 +28,9 @@ export const QUERY_RECENT_NODES = gql`
         node {
           id
           name
+          metadata {
+            ${metadataFields}
+          }
         }
       }
     }

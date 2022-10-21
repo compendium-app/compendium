@@ -2,3 +2,11 @@ id: test
 name: test
 metadata:
   description: test
+---
+id: test2
+name: test2
+metadata:
+  description: test2
+  links:
+    - name: Test
+      url: https://example.com
