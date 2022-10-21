@@ -29,9 +29,14 @@ export const IndexPage = () => {
   return (
     <>
       {nodeId && (
-        <NodeDetailDrawer nodeId={nodeId} onClose={() => setNodeId(null)} />
+        <NodeDetailDrawer
+          nodeId={nodeId}
+          onClose={() => setNodeId(null)}
+          onNodeSelected={(id) => setNodeId(id)}
+        />
       )}
       <Diagram
+        key={nodeId}
         node={nodeId}
         nodeSelected={(id) => {
           setNodeId(id);
