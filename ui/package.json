@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.5.10",
     "@lifeomic/react-vis-network": "^1.1.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.0",
@@ -12,7 +11,7 @@
     "@types/node": "^16.11.27",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
-    "antd": "^4.19.5",
+    "antd": "^4.23.6",
     "aws-appsync": "^4.1.5",
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-react": "^4.0.11",

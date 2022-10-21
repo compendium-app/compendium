@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-import { Network, Node, Edge } from "@lifeomic/react-vis-network";
-import { Node as DataNode } from ".";
+import { Edge, Network, Node } from "@lifeomic/react-vis-network";
+import { Node as DataNode } from "../../queries/query-node";
 
-export interface Edge {
+export interface DataEdge {
   id: string;
   from: string;
   to: string;
@@ -13,7 +13,7 @@ export interface Edge {
 }
 export interface Graph {
   nodes: { [key: string]: DataNode };
-  edges: { [key: string]: Edge };
+  edges: { [key: string]: DataEdge };
 }
 
 interface DiagramNetworkProps {

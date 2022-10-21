@@ -1,45 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 // import Graph from "vis-react";
-import { gql, useQuery } from "@apollo/client";
-import { DiagramNetwork, Graph, Edge } from "./network";
-
-const GET_NODE = gql`
-  query getNode($id: ID!) {
-    node(id: $id) {
-      id
-      name
-      version
-      dependencies {
-        dependantVersion
-        node {
-          id
-          name
-          version
-        }
-      }
-      dependants {
-        dependantVersion
-        node {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-export interface Depend {
-  dependantVersion: string;
-  node: Node;
-}
-export interface Node {
-  id: string;
-  name: string;
-  version: string;
-  dependencies: Depend[];
-  dependants: Depend[];
-}
+import { useQuery } from "@apollo/client";
+import { Node, QUERY_NODE } from "../../queries/query-node";
+import { DataEdge, DiagramNetwork, Graph } from "./network";
 
 interface Response {
   node: Node;
@@ -54,11 +18,11 @@ export const Diagram = (props: DiagramProps) => {
   const { node: initialNode, nodeSelected } = props;
   const [node, setNode] = useState(initialNode);
   const [graph, setGraph] = useState<Graph>({ nodes: {}, edges: {} });
-  useQuery<Response>(GET_NODE, {
+  useQuery<Response>(QUERY_NODE, {
     variables: { id: node },
     onCompleted: (data) => {
       const nodes = { ...graph.nodes } as { [key: string]: Node };
-      const edges = { ...graph.edges } as { [key: string]: Edge };
+      const edges = { ...graph.edges } as { [key: string]: DataEdge };
       const node = data.node;
       nodes[node.id] = node;
 
@@ -74,15 +38,6 @@ export const Diagram = (props: DiagramProps) => {
       for (const d of node.dependants) {
         if (!d.node) continue;
         const dn = d.node;
-
-        console.log(
-          "??",
-          node.id,
-          "...",
-          node.version,
-          " !== ",
-          d.dependantVersion
-        );
 
         const to = node.id;
         const from = dn.id;

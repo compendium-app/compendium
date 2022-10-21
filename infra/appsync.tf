@@ -40,6 +40,7 @@ type Execution {
 
 type Query {
   node(id: ID!): Node
+  recentNodes(limit: Int = 10): [Node!]!
 }
 type Mutation {
   putNodes(nodes: [NodeInput!]!): Execution!

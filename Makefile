@@ -15,4 +15,4 @@ sso:
 	aws sso login
 
 build-ui:
-	cd ui && npm ci && npm run build
+	cd ui && npm ci -f && npm run build

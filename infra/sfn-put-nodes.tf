@@ -36,6 +36,12 @@ resource "aws_sfn_state_machine" "put-nodes" {
                 "SK": {
                   "S.$": "States.Format('NODE|{}',$.node.id)"
                 },
+                "GSI1PK": {
+                  "S": "NODES|RECENT"
+                },
+                "GSI1SK": {
+                  "S.$": "States.Format('{}|{}',$$.Execution.StartTime,$.node.id)"
+                },
                 "id": {
                   "S.$": "$.node.id"
                 },

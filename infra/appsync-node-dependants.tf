@@ -8,7 +8,7 @@ resource "aws_appsync_resolver" "node-dependants" {
 {
   "version": "2018-05-29",
   "operation" : "Query",
-  "index":"GSI1",
+  "index":"Inverse",
   "query" : {
       "expression" : "SK = :SK",
       "expressionValues" : {
