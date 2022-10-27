@@ -44,7 +44,7 @@ export const NodeDetailDrawer = ({
                     href="#"
                     onClick={() => onNodeSelected(i.node.id)}
                   >
-                    {i.node.name}
+                    {i.node?.name}
                   </Typography.Link>
                 </List.Item>
               )}
@@ -62,7 +62,7 @@ export const NodeDetailDrawer = ({
                     href="#"
                     onClick={() => onNodeSelected(i.node.id)}
                   >
-                    {i.node.name}
+                    {i.node?.name}
                   </Typography.Link>
                 </List.Item>
               )}

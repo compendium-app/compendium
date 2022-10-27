@@ -18,18 +18,21 @@ export interface Graph {
 
 interface DiagramNetworkProps {
   selectedNodeIds: string[];
+  visibleNodeIds: string[];
   graph: Graph;
-  nodeSelected?: (node: string) => void;
+  nodeSelected?: (node: string, shift: boolean) => void;
 }
 
 export const DiagramNetwork = (props: DiagramNetworkProps) => {
-  const { graph, nodeSelected, selectedNodeIds } = props;
+  const { graph, nodeSelected, selectedNodeIds, visibleNodeIds } = props;
 
   const networkRef = useRef();
   useEffect(() => {
     if (networkRef.current) {
       (networkRef.current as any).network.on("click", (event: any) => {
-        if (nodeSelected && event.nodes[0]) nodeSelected(event.nodes[0]);
+        if (nodeSelected && event.nodes[0]) {
+          nodeSelected(event.nodes[0], event.event.srcEvent.shiftKey);
+        }
       });
     }
   });
@@ -51,7 +54,6 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
               roundness: 0.4,
             },
           },
-          // nodes: { color: "green" },
           layout: {
             randomSeed: 2000,
             // hierarchical: {
@@ -63,14 +65,13 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
       >
         {Object.values(graph.nodes).map((n) => {
           const color =
-            selectedNodeIds.indexOf(n.id) !== -1 ? "#2B7CE9" : undefined;
+            selectedNodeIds.indexOf(n.id) !== -1
+              ? "#79C900"
+              : visibleNodeIds.indexOf(n.id) !== -1
+              ? "#2B7CE9"
+              : "#97C2FC";
           return (
-            <Node
-              key={`${n.id}_${color}`}
-              id={n.id}
-              label={n.name}
-              color={color}
-            />
+            <Node key={`${n.id}`} id={n.id} label={n.name} color={color} />
           );
         })}
         {Object.values(graph.edges).map((e) => (

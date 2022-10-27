@@ -1,29 +1,24 @@
-import { useState } from "react";
-
-// import Graph from "vis-react";
-import { useQuery } from "@apollo/client";
-import { Node, QUERY_NODE } from "../../queries/query-node";
-import { DataEdge, DiagramNetwork, Graph } from "./network";
-
-interface Response {
-  node: Node;
-}
+import { Node } from "../../queries/query-node";
+import { useQueryNodes } from "../../queries/query-nodes";
+import { DataEdge, DiagramNetwork } from "./network";
 
 interface DiagramProps {
-  node: string;
-  nodeSelected?: (node: string) => void;
+  nodeIds: string[];
+  selectedNodeId?: string;
+  nodeSelected?: (node: string, shift: boolean) => void;
 }
 
 export const Diagram = (props: DiagramProps) => {
-  const { node: initialNode, nodeSelected } = props;
-  const [node, setNode] = useState(initialNode);
-  const [graph, setGraph] = useState<Graph>({ nodes: {}, edges: {} });
-  useQuery<Response>(QUERY_NODE, {
-    variables: { id: node },
-    onCompleted: (data) => {
-      const nodes = { ...graph.nodes } as { [key: string]: Node };
-      const edges = { ...graph.edges } as { [key: string]: DataEdge };
-      const node = data.node;
+  const { nodeIds, selectedNodeId, nodeSelected } = props;
+  const { data } = useQueryNodes({ ids: nodeIds });
+
+  const nodes = {} as { [key: string]: Node };
+  const edges = {} as { [key: string]: DataEdge };
+  if (data) {
+    for (const node of data) {
+      if (!node) {
+        continue;
+      }
       nodes[node.id] = node;
 
       for (const d of node.dependencies) {
@@ -51,37 +46,25 @@ export const Diagram = (props: DiagramProps) => {
         };
         nodes[dn.id] = dn;
       }
+    }
+  }
+  const graph = { nodes, edges };
 
-      setGraph({ nodes, edges });
-    },
-  });
   return (
     <>
+      {/* {JSON.stringify(graph, null, "")} */}
       {/* {JSON.stringify(data, null, "")} */}
-      {/* <h4>Nodes:</h4>
-      <ul>
-        {Object.values(graph.nodes).map((n) => (
-          <li onClick={() => setNode(n.id)}>
-            {n.id} - {n.name}
-          </li>
-        ))}
-      </ul>
-      <h4>Edges:</h4>
-      <ul>
-        {Object.values(graph.edges).map((n) => (
-          <li key={`${n.id}`} onClick={() => setNode(n.from)}>
-            {n.id} - {n.from} {"=>"} {n.to}
-          </li>
-        ))}
-      </ul> */}
 
       <DiagramNetwork
-        selectedNodeIds={[node]}
+        selectedNodeIds={selectedNodeId ? [selectedNodeId] : []}
+        visibleNodeIds={nodeIds}
+        // selectedNodeIds={[]}
+        // visibleNodeIds={[]}
         graph={graph}
-        nodeSelected={(node) => {
-          setNode(node);
+        nodeSelected={(node, shift) => {
+          // setNode(node);
           if (nodeSelected) {
-            nodeSelected(node);
+            nodeSelected(node, shift);
           }
         }}
       />

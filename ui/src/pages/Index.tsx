@@ -3,45 +3,77 @@ import { Diagram } from "../components/diagram";
 import { NodeDetailDrawer } from "../components/node-detail-drawer";
 import { RecentNodes } from "../components/recent-nodes";
 
+interface NodeSelection {
+  selectedNode?: string;
+  visibleNodes?: string[];
+}
+
 export const IndexPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const setNodeId = (id: string | null) => {
-    if (id) {
-      searchParams.set("node", id);
+  const setNodeSelection = (selection: NodeSelection | null) => {
+    console.log("??", selection);
+    if (selection?.selectedNode) {
+      searchParams.set("selected", selection.selectedNode);
     } else {
-      searchParams.delete("node");
+      searchParams.delete("selected");
+    }
+    if (selection?.visibleNodes) {
+      searchParams.set("nodes", selection.visibleNodes.join(","));
+    } else {
+      searchParams.delete("nodes");
     }
 
     setSearchParams(searchParams);
   };
 
-  const nodeId = searchParams.get("node");
-  if (!nodeId) {
+  const nodes = searchParams.get("nodes");
+  const selection: NodeSelection = {
+    selectedNode: searchParams.get("selected") || undefined,
+    visibleNodes: nodes ? nodes.split(",") : undefined,
+  };
+  if (!selection.visibleNodes || selection.visibleNodes.length === 0) {
     return (
       <RecentNodes
         onNodeSelected={(id) => {
-          setNodeId(id);
+          setNodeSelection({
+            selectedNode: id,
+            visibleNodes: [id],
+          });
         }}
       />
     );
   }
   return (
     <>
-      {nodeId && (
+      {/* {JSON.stringify(selection)} */}
+      {selection.selectedNode && (
         <NodeDetailDrawer
-          nodeId={nodeId}
-          onClose={() => setNodeId(null)}
-          onNodeSelected={(id) => setNodeId(id)}
+          nodeId={selection.selectedNode}
+          onClose={() => setNodeSelection(null)}
+          onNodeSelected={(id) =>
+            setNodeSelection({
+              selectedNode: id,
+              visibleNodes: [id, ...(selection.visibleNodes || [])],
+            })
+          }
         />
       )}
-      <Diagram
-        key={nodeId}
-        node={nodeId}
-        nodeSelected={(id) => {
-          setNodeId(id);
-        }}
-      />
+      {selection.selectedNode && (
+        <Diagram
+          // key={JSON.stringify(selection)}
+          nodeIds={selection.visibleNodes}
+          selectedNodeId={selection.selectedNode}
+          nodeSelected={(id, shift) => {
+            setNodeSelection({
+              selectedNode: id,
+              visibleNodes: shift
+                ? [id, ...(selection.visibleNodes || [])]
+                : selection.visibleNodes,
+            });
+          }}
+        />
+      )}
     </>
   );
 };
