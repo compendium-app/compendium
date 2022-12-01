@@ -30,9 +30,7 @@ resource "aws_s3_object" "dist" {
 locals {
   envJSContent = <<EOF
 window.ENV = {
-  REACT_APP_COMPENDIUM_GRAPHQL_URL: "${var.override_graphql_url!=""?var.override_graphql_url:aws_appsync_graphql_api.main.uris["GRAPHQL"]}",
-  REACT_APP_AWS_ACCESS_KEY_ID: "${aws_iam_access_key.ui.id}",
-  REACT_APP_AWS_SECRET_ACCESS_KEY: "${aws_iam_access_key.ui.secret}"
+  REACT_APP_COMPENDIUM_GRAPHQL_URL: "${var.override_graphql_url!=""?var.override_graphql_url:aws_appsync_graphql_api.main.uris["GRAPHQL"]}"
 }
   EOF
 }

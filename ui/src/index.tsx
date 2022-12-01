@@ -20,14 +20,14 @@ import {
 const ENV = (window as any).ENV || process.env;
 const url = ENV.REACT_APP_COMPENDIUM_GRAPHQL_URL as string;
 const region = "eu-central-1";
-const auth = {
+const auth = ((ENV.REACT_APP_AWS_ACCESS_KEY_ID && {
   type: AUTH_TYPE.AWS_IAM,
   credentials: {
     accessKeyId: ENV.REACT_APP_AWS_ACCESS_KEY_ID,
     secretAccessKey: ENV.REACT_APP_AWS_SECRET_ACCESS_KEY,
     sessionToken: ENV.REACT_APP_AWS_SESSION_TOKEN,
   },
-} as AuthOptions;
+}) || { type: AUTH_TYPE.NONE }) as AuthOptions;
 const httpLink = createHttpLink({ uri: url });
 
 const link = ApolloLink.from([
