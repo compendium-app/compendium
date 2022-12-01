@@ -13,7 +13,8 @@ resource "aws_iam_role" "main" {
             "states.amazonaws.com",
             "events.amazonaws.com",
             "lambda.amazonaws.com",
-            "appsync.amazonaws.com"
+            "appsync.amazonaws.com",
+            "apigateway.amazonaws.com"
           ]
         }
       },
