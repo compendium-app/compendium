@@ -1,6 +1,9 @@
 output "appsync_api_domain_name" {
   value = replace(replace(aws_appsync_graphql_api.main.uris["GRAPHQL"], "https://", ""), "/graphql", "")
 }
+output "appsync_api_id" {
+  value = aws_appsync_graphql_api.main.id
+}
 
 output "appsync_api_url" {
   value = aws_appsync_graphql_api.main.uris["GRAPHQL"]
@@ -8,4 +11,8 @@ output "appsync_api_url" {
 
 output "ui_cloudfront_domain_name" {
   value = aws_cloudfront_distribution.ui.domain_name
+}
+
+output "iam_role_arn" {
+  value = aws_iam_role.main.arn
 }
