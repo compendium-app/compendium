@@ -20,3 +20,8 @@ variable "tags" {
   default     = {}
   description = "resource tags"
 }
+
+variable "override_graphql_url" {
+  type    = string
+  default = ""
+}
