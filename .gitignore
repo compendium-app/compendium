@@ -1,32 +1,61 @@
 .env
-.vscode
 
-# Local .terraform directories
-**/.terraform/*
+# compiled output
+/dist
+/node_modules
 
-# .tfstate files
-*.tfstate
-*.tfstate.*
+# CDK asset staging directory
+.cdk.staging
+cdk.out
 
-# Crash log files
-crash.log
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
-# version control.
-#
-# example.tfvars
+# OS
+.DS_Store
 
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+# Tests
+/coverage
+/.nyc_output
 
-# Include override files you do wish to add to version control using negated pattern
-#
-# !example_override.tf
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.code-workspace
 
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Terraform
+terraform.tfstate.backup
+.terraform
+
+# Reports
+reports
+
+# Dotenv
+.env
+
+# SQLite DB
+data
+
+# ignore generated open api bundle file
+openapi-bundle.json
+
+# Db volume
+local/db
