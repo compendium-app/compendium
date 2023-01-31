@@ -1,9 +1,14 @@
+import ReactDOM from "react-dom/client";
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import { root, client, App } from 'compendium-ui';
+import { client, App } from 'compendium-ui';
 
 import { ApolloClient, ApolloProvider } from '@apollo/client';
+
+export const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
 root.render(
   <React.StrictMode>
