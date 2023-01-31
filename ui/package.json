@@ -1,12 +1,29 @@
 {
-  "name": "ui",
+  "name": "compendium-ui",
+  "description": "Compendium ui to display network of nodes from stored data",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Jakub Knejzlik",
+    "email": "jakub.knejzlik@gmail.com"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/compendium-ui.umd",
+  "module": "./dist/compendium-ui.es",
+  "types": "./dist/index",
+  "exports": {
+    ".": {
+      "import": "./dist/compendium-ui.es.js",
+      "require": "./dist/compendium-ui.umd.js"
+    }
+  },
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@lifeomic/react-vis-network": "^1.1.0",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.27",
@@ -17,28 +34,50 @@
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-react": "^4.0.11",
     "aws-appsync-subscription-link": "^3.0.10",
+    "esbuild": "^0.17.5",
     "graphql": "^15.8.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.6.3",
     "vis-data": "^7.1.4",
     "vis-network": "^9.1.2",
     "vis-react": "^0.5.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "@testing-library/dom": "^8.20.0",
+    "@testing-library/react": "^13.4.0",
+    "@vitejs/plugin-react": "^3.0.1",
+    "c8": "^7.12.0",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
+    "jsdom": "^21.1.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
+    "react-test-renderer": "^18.2.0",
+    "vite": "^4.0.4",
+    "vite-plugin-dts": "^1.7.1",
+    "vitest": "^0.28.3"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest run",
+    "watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true,
+      "es2020": true
+    },
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "sourceType": "module"
+    }
   },
   "browserslist": {
     "production": [
