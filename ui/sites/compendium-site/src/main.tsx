@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { ApolloProvider } from '@apollo/client';
 import { App, client } from "compendium-ui";
-// import 'compendium-ui/style.css';
+import 'compendium-ui/dist/style.css';
 
 export const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

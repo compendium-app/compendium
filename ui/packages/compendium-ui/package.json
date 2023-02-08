@@ -9,6 +9,7 @@
   },
   "files": [
     "dist",
+    "dist/style.css",
     "README.md"
   ],
   "main": "./dist/compendium-ui.umd.js",
@@ -18,7 +19,8 @@
     ".": {
       "import": ["./dist/compendium-ui.es.js", "./dist/style.css"],
       "require": "./dist/compendium-ui.umd.js"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
