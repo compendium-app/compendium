@@ -1,94 +1,14 @@
 {
-  "name": "compendium-ui",
-  "description": "Compendium ui to display network of nodes from stored data",
-  "version": "0.1.0",
-  "license": "MIT",
-  "author": {
-    "name": "Jakub Knejzlik",
-    "email": "jakub.knejzlik@gmail.com"
-  },
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "main": "./dist/compendium-ui.umd",
-  "module": "./dist/compendium-ui.es",
-  "types": "./dist/index",
-  "exports": {
-    ".": {
-      "import": "./dist/compendium-ui.es.js",
-      "require": "./dist/compendium-ui.umd.js"
-    }
-  },
-  "dependencies": {
-    "@lifeomic/react-vis-network": "^1.1.0",
-    "antd": "^4.23.6",
-    "aws-appsync": "^4.1.5",
-    "aws-appsync-auth-link": "^3.0.7",
-    "aws-appsync-react": "^4.0.11",
-    "aws-appsync-subscription-link": "^3.0.10",
-    "graphql": "^15.8.0",
-    "vis-data": "^7.1.4",
-    "vis-network": "^9.1.2",
-    "vis-react": "^0.5.1"
-  },
-  "devDependencies": {
-    "@testing-library/dom": "^8.20.0",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.27",
-    "@types/react": "^18.0.5",
-    "@types/react-dom": "^18.0.1",
-    "@vitejs/plugin-react": "^3.0.1",
-    "c8": "^7.12.0",
-    "eslint": "^8.33.0",
-    "eslint-plugin-react": "^7.32.2",
-    "jsdom": "^21.1.0",
-    "react-test-renderer": "^18.2.0",
-    "typescript": "^4.6.3",
-    "vite": "^4.0.4",
-    "vite-plugin-dts": "^1.7.1",
-    "vitest": "^0.28.3"
-  },
-  "peerDependencies": {
-    "@apollo/client": "^3.7.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "test": "vitest run",
-    "watch": "vitest",
-    "coverage": "vitest run --coverage"
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "node": true,
-      "es2020": true
+    "name": "lib-example",
+    "private": true,
+    "workspaces": {
+        "packages": [
+            "packages/*",
+            "sites/*"
+        ]
     },
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ],
-    "parserOptions": {
-      "sourceType": "module"
+    "devDependencies": {
+        "prettier": "2.5.1",
+        "pretty-quick": "3.1.3"
     }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
 }
