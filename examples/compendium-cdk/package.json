@@ -2,7 +2,6 @@
   "name": "compendium",
   "version": "0.1.0",
   "dependencies": {
-    "@types/node": "^18.11.18",
-    "compendium-cdk": "file:../.."
+    "compendium-cdk": "*"
   }
 }
