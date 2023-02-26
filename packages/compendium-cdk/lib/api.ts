@@ -17,7 +17,7 @@ export class CompendiumAPI extends Construct {
     super(scope, id);
 
     const dynamoTable = new Table(this, `${id}Table`, {
-      tableName: id,
+      tableName: "compendium",
       partitionKey: { name: "PK", type: AttributeType.STRING },
       sortKey: { name: "SK", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
@@ -48,7 +48,7 @@ export class CompendiumAPI extends Construct {
       },
     });
 
-    const api = new GraphqlApi(this, "this", {
+    const api = new GraphqlApi(this, `${id}GraphqlApi`, {
       name: id,
       schema: SchemaFile.fromAsset(join(__dirname, "schema.graphql")),
       logConfig: {
