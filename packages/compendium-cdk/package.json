@@ -2,8 +2,9 @@
   "name": "compendium-cdk",
   "version": "0.0.2",
   "description": "Compendium AWS CDK package",
-  "module": "lib/index.js",
-  "main": "lib/index.js",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Jakub Knejzlik",
   "dependencies": {
     "@aws-cdk/aws-appsync-alpha": "^2.55.1-alpha.0",
@@ -11,12 +12,8 @@
     "aws-cdk-lib": "2.59.0",
     "constructs": "^10.0.0"
   },
-  "devDependencies": {
-    "@aws-sdk/types": "^3.127.0",
-    "@types/node": "^18.13.0"
-  },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && copyfiles --flat lib/schema.graphql dist/",
     "watch": "tsc -w"
   },
   "repository": {

@@ -16,6 +16,11 @@ Open [http://127.0.0.1:5173/](http://127.0.0.1:5173/) or press 'o' in console to
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+To build cdk construct run:
+
+### `npm run build -w packages/compendium-ui`
+
+
 ## Compendium-ui package development hint
 
 You can copy env.js.example to packages/compendium-ui folder and run following command to test compendium react component directly in package workspace (withou example site):
