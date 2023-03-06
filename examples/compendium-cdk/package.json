@@ -1,0 +1,7 @@
+{
+  "name": "compendium",
+  "version": "0.1.0",
+  "dependencies": {
+    "compendium-cdk": "*"
+  }
+}

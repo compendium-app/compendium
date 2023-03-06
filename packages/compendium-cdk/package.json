@@ -1,0 +1,32 @@
+{
+  "name": "compendium-cdk",
+  "version": "0.0.2",
+  "description": "Compendium AWS CDK package",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Jakub Knejzlik",
+  "dependencies": {
+    "@aws-cdk/aws-appsync-alpha": "^2.55.1-alpha.0",
+    "aws-cdk": "^2.39.0",
+    "aws-cdk-lib": "^2.59.0",
+    "constructs": "^10.0.0"
+  },
+  "scripts": {
+    "build": "tsc && copyfiles --flat lib/schema.graphql dist/",
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakubknejzlik/compendium.git"
+  },
+  "keywords": [
+    "dependency",
+    "graph"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jakubknejzlik/compendium/issues"
+  },
+  "homepage": "https://github.com/jakubknejzlik/compendium#readme"
+}
