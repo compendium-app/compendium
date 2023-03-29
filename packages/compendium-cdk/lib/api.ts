@@ -4,53 +4,62 @@ import {
   GraphqlApi,
   MappingTemplate,
   SchemaFile,
-} from "@aws-cdk/aws-appsync-alpha";
-import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
-import { Construct } from "constructs";
-import { join } from "path";
-import { SFNPutNodes } from "./sfn-put-node";
+} from '@aws-cdk/aws-appsync-alpha';
+import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { Construct } from 'constructs';
+import { join } from 'path';
+import { SFNPutNodes } from './sfn-put-node';
 
-interface CompendiumApiProps {}
+interface CompendiumApiProps {
+  isDynamoTableDestroyable: boolean;
+}
 
 export class CompendiumAPI extends Construct {
-  constructor(scope: Construct, id: string, props: CompendiumApiProps) {
+  appSyncUrl: string;
+  appSyncArn: string;
+
+  constructor(scope: Construct, id: string, props?: CompendiumApiProps) {
     super(scope, id);
 
-    const dynamoTable = new Table(this, `${id}Table`, {
-      tableName: "compendium",
-      partitionKey: { name: "PK", type: AttributeType.STRING },
-      sortKey: { name: "SK", type: AttributeType.STRING },
+    const dynamoTable = new Table(this, `CompendiumTable`, {
+      tableName: `${id}`,
+      partitionKey: { name: 'PK', type: AttributeType.STRING },
+      sortKey: { name: 'SK', type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
+      removalPolicy: props?.isDynamoTableDestroyable
+        ? RemovalPolicy.DESTROY
+        : RemovalPolicy.RETAIN,
     });
 
     const sfnPutNodes = new SFNPutNodes(this, id, { dynamoTable });
 
     dynamoTable.addGlobalSecondaryIndex({
-      indexName: "Inverse",
+      indexName: 'Inverse',
       partitionKey: {
-        name: "SK",
+        name: 'SK',
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: "PK",
+        name: 'PK',
         type: AttributeType.STRING,
       },
     });
     dynamoTable.addGlobalSecondaryIndex({
-      indexName: "GSI1",
+      indexName: 'GSI1',
       partitionKey: {
-        name: "GSI1PK",
+        name: 'GSI1PK',
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: "GSI1SK",
+        name: 'GSI1SK',
         type: AttributeType.STRING,
       },
     });
 
     const api = new GraphqlApi(this, `${id}GraphqlApi`, {
       name: id,
-      schema: SchemaFile.fromAsset(join(__dirname, "schema.graphql")),
+      schema: SchemaFile.fromAsset(join(__dirname, 'schema.graphql')),
       logConfig: {
         fieldLogLevel: FieldLogLevel.ALL,
       },
@@ -60,23 +69,23 @@ export class CompendiumAPI extends Construct {
         },
       },
     });
-    const dynamoDataSource = api.addDynamoDbDataSource("DynamoDB", dynamoTable);
+    const dynamoDataSource = api.addDynamoDbDataSource('DynamoDB', dynamoTable);
     const stepFunctionDataSource = api.addHttpDataSource(
-      "StepFunction",
-      "https://states.eu-central-1.amazonaws.com/",
+      'StepFunction',
+      'https://states.eu-central-1.amazonaws.com/',
       {
         authorizationConfig: {
-          signingRegion: "eu-central-1",
-          signingServiceName: "states",
+          signingRegion: 'eu-central-1',
+          signingServiceName: 'states',
         },
       }
     );
     dynamoTable.grantReadWriteData(stepFunctionDataSource);
     sfnPutNodes.grant(stepFunctionDataSource, `states:StartExecution`);
 
-    dynamoDataSource.createResolver("queryNode", {
-      typeName: "Query",
-      fieldName: "node",
+    dynamoDataSource.createResolver('queryNode', {
+      typeName: 'Query',
+      fieldName: 'node',
       requestMappingTemplate: MappingTemplate.fromString(`
             {
               "version": "2018-05-29",
@@ -95,9 +104,9 @@ export class CompendiumAPI extends Construct {
       `),
     });
 
-    dynamoDataSource.createResolver("queryRecentNode", {
-      typeName: "Query",
-      fieldName: "recentNodes",
+    dynamoDataSource.createResolver('queryRecentNode', {
+      typeName: 'Query',
+      fieldName: 'recentNodes',
       requestMappingTemplate: MappingTemplate.fromString(`
         {
           "version": "2018-05-29",
@@ -122,9 +131,9 @@ export class CompendiumAPI extends Construct {
         $utils.toJson($items)
       `),
     });
-    dynamoDataSource.createResolver("nodeDependants", {
-      typeName: "Node",
-      fieldName: "dependants",
+    dynamoDataSource.createResolver('nodeDependants', {
+      typeName: 'Node',
+      fieldName: 'dependants',
       requestMappingTemplate: MappingTemplate.fromString(`
         {
           "version": "2018-05-29",
@@ -144,9 +153,9 @@ export class CompendiumAPI extends Construct {
         $utils.toJson($context.result.items)
       `),
     });
-    dynamoDataSource.createResolver("nodeDependencies", {
-      typeName: "Node",
-      fieldName: "dependencies",
+    dynamoDataSource.createResolver('nodeDependencies', {
+      typeName: 'Node',
+      fieldName: 'dependencies',
       requestMappingTemplate: MappingTemplate.fromString(`
         {
           "version": "2018-05-29",
@@ -167,9 +176,9 @@ export class CompendiumAPI extends Construct {
       `),
     });
 
-    dynamoDataSource.createResolver("dependantNode", {
-      typeName: "Dependant",
-      fieldName: "node",
+    dynamoDataSource.createResolver('dependantNode', {
+      typeName: 'Dependant',
+      fieldName: 'node',
       requestMappingTemplate: MappingTemplate.fromString(`
         {
           "version": "2018-05-29",
@@ -186,9 +195,9 @@ export class CompendiumAPI extends Construct {
       `),
     });
 
-    dynamoDataSource.createResolver("dependencyNode", {
-      typeName: "Dependency",
-      fieldName: "node",
+    dynamoDataSource.createResolver('dependencyNode', {
+      typeName: 'Dependency',
+      fieldName: 'node',
       requestMappingTemplate: MappingTemplate.fromString(`
         {
           "version": "2018-05-29",
@@ -214,9 +223,9 @@ export class CompendiumAPI extends Construct {
       `),
     });
 
-    stepFunctionDataSource.createResolver("putNodes", {
-      typeName: "Mutation",
-      fieldName: "putNodes",
+    stepFunctionDataSource.createResolver('putNodes', {
+      typeName: 'Mutation',
+      fieldName: 'putNodes',
       requestMappingTemplate: MappingTemplate.fromString(`
             $util.qr($ctx.stash.put("executionId", $util.autoId()))
 
@@ -238,6 +247,16 @@ export class CompendiumAPI extends Construct {
       responseMappingTemplate: MappingTemplate.fromString(`
       {"executionArn":"$utils.parseJson($ctx.result.body).executionArn"}
       `),
+    });
+
+    this.appSyncUrl = api.graphqlUrl;
+    this.appSyncArn = api.arn;
+    // Outputs
+    new CfnOutput(this, 'AppSyncUrl', {
+      value: api.graphqlUrl,
+    });
+    new CfnOutput(this, 'AppSyncArn', {
+      value: api.arn,
     });
   }
 }
