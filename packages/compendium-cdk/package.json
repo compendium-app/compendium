@@ -1,6 +1,6 @@
 {
-  "name": "compendium-cdk",
-  "version": "0.0.2",
+  "name": "@compendium-app/compendium-cdk",
+  "version": "0.0.3",
   "description": "Compendium AWS CDK package",
   "module": "dist/index.js",
   "main": "dist/index.js",

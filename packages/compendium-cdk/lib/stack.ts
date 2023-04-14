@@ -9,6 +9,6 @@ export class CompendiumStack extends Stack {
   constructor(scope: Construct, id: string, props: EKSAppStackProps) {
     super(scope, id, props);
 
-    new CompendiumAPI(this, `${id}API`, {});
+    new CompendiumAPI(this, `${id}API`);
   }
 }
