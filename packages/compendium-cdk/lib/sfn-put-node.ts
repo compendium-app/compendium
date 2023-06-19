@@ -52,6 +52,9 @@ export class SFNPutNodes extends StateMachine {
             JsonPath.stringAt("$.node.id")
           )
         ),
+        GSI2PK: DynamoAttributeValue.fromString(
+          JsonPath.format("TYPE|{}", JsonPath.stringAt("$.node.typeId"))
+        ),
         id: DynamoAttributeValue.fromString(JsonPath.stringAt("$.node.id")),
         name: DynamoAttributeValue.fromString(JsonPath.stringAt("$.node.name")),
         metadata: DynamoAttributeValue.fromString(
@@ -59,6 +62,9 @@ export class SFNPutNodes extends StateMachine {
         ),
         version: DynamoAttributeValue.fromString(
           JsonPath.stringAt("$$.Execution.StartTime")
+        ),
+        typeId: DynamoAttributeValue.fromString(
+          JsonPath.stringAt("$.node.typeId")
         ),
       },
     });

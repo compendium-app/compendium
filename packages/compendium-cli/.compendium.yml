@@ -1,10 +1,12 @@
 id: test
 name: test
+typeId: type1
 metadata:
   description: test
 ---
 id: test2
 name: test2
+typeId: type2
 metadata:
   description: test2
   links:
