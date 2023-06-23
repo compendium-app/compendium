@@ -37,6 +37,7 @@ type NodeInput struct {
 	ID           string                 `json:"id"`
 	Name         string                 `json:"name"`
 	Metadata     map[string]interface{} `json:"metadata"`
+	TypeId       string                 `json:"typeId"`
 	Dependencies []string               `json:"dependencies"`
 }
 type Execution struct {

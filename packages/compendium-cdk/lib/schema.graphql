@@ -3,6 +3,8 @@ type Node {
   name: String!
   metadata: NodeMetadata
   version: String!
+  typeId: String!
+  type: NodeType!
   dependencies(limit: Int = 100): [Dependency!]!
   dependants(limit: Int = 100): [Dependant!]!
 }
@@ -24,9 +26,15 @@ type Dependant {
   dependantVersion: String!
   node: Node
 }
+type NodeType {
+  id: ID!
+  name: String!
+}
+
 input NodeInput {
   id: ID!
   name: String!
+  typeId: String!
   metadata: NodeMetadataInput!
   dependencies: [ID!]!
 }
@@ -38,6 +46,10 @@ input NodeMetadataLinkInput {
   url: String!
   name: String
 }
+input NodeTypeInput {
+  id: ID!
+  name: String!
+}
 
 type Execution {
   executionArn: String!
@@ -46,7 +58,11 @@ type Execution {
 type Query {
   node(id: ID!): Node
   recentNodes(limit: Int = 10): [Node!]!
+  nodeTypes: [NodeType!]!
+  nodesByType(typeId: ID!): [Node!]!
 }
 type Mutation {
   putNodes(nodes: [NodeInput!]!): Execution!
+  putNodeType(type: NodeTypeInput!): NodeType!
+  deleteNodeType(id: ID!): NodeType!
 }
