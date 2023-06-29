@@ -1,7 +1,7 @@
 {
   "name": "@compendium-app/compendium-ui",
   "description": "Compendium ui to display network of nodes from stored data",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "author": {
     "name": "Jakub Knejzlik",
