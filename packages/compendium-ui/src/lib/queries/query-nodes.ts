@@ -13,6 +13,10 @@ node${i}:node(id: $id${i}) {
     ${metadataFields}
   }
   version
+  type {
+    id
+    name
+  }
   dependencies {
     dependantVersion
     node {
@@ -21,6 +25,10 @@ node${i}:node(id: $id${i}) {
       version
       metadata {
         ${metadataFields}
+      }
+      type {
+        id
+        name
       }
     }
   }
@@ -31,6 +39,10 @@ node${i}:node(id: $id${i}) {
       name
       metadata {
         ${metadataFields}
+      }
+      type {
+        id
+        name
       }
     }
   }
