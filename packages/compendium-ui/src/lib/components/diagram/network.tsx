@@ -1,90 +1,137 @@
-import { useEffect, useRef } from "react";
+import { useContext, useMemo } from "react";
 
-import { Edge, Network, Node } from "@lifeomic/react-vis-network";
-import { Node as DataNode } from "../../queries/query-node";
+import Graph from "react-graph-vis";
+
+import { v4 as uuidv4 } from "uuid";
+import { SettingsContext } from "../../contexts/settings";
 
 export interface DataEdge {
   id: string;
   from: string;
   to: string;
   length: number;
-  dashed: boolean;
+  dashes: boolean;
   label?: string;
 }
+
+export interface DataNode {
+  id: string;
+  label: string;
+  color: string;
+  font: { color: string };
+  type: string;
+  borderWidth: number;
+}
+
 export interface Graph {
-  nodes: { [key: string]: DataNode };
-  edges: { [key: string]: DataEdge };
+  nodes: DataNode[];
+  edges: DataEdge[];
 }
 
 interface DiagramNetworkProps {
   selectedNodeIds: string[];
   visibleNodeIds: string[];
+  typesColorMap: Record<string, string>;
+  uniqueTypes: string[];
   graph: Graph;
   nodeSelected?: (node: string, shift: boolean) => void;
 }
 
 export const DiagramNetwork = (props: DiagramNetworkProps) => {
-  const { graph, nodeSelected, selectedNodeIds, visibleNodeIds } = props;
+  const {
+    graph,
+    nodeSelected,
+    visibleNodeIds,
+    selectedNodeIds,
+    typesColorMap,
+    uniqueTypes,
+  } = props;
 
-  const networkRef = useRef();
-  useEffect(() => {
-    if (networkRef.current) {
-      (networkRef.current as any).network.on("click", (event: any) => {
-        if (nodeSelected && event.nodes[0]) {
-          nodeSelected(event.nodes[0], event.event.srcEvent.shiftKey);
-        }
-      });
-    }
-  });
+  const { settings, setSettings } = useContext(SettingsContext);
+
+  // NOTE: there is a problem with updating graph nodes in visjs
+  // It throws `A duplicate id was found in the parameter array.`
+  // Therefore we're rerendering graph, when nodes are about to update
+  const version = useMemo(uuidv4, [JSON.stringify(visibleNodeIds), settings]);
+
+  const options = {
+    width: "100%",
+    height: "100%",
+    edges: {
+      arrows: { to: { enabled: true } },
+      smooth: {
+        type: "cubicBezier",
+        forceDirection: "horizontal",
+        roundness: 0.4,
+      },
+    },
+    layout: {
+      randomSeed: 2000,
+    },
+    physics: { enabled: true },
+  };
+
   return (
     <>
-      <Network
-        ref={networkRef}
-        options={{
-          width: "100%",
-          height: "100%",
-          edges: {
-            arrows: { to: { enabled: true } },
-            smooth: {
-              type: "cubicBezier",
-              forceDirection: "horizontal",
-              // directionInput.value == "UD" || directionInput.value == "DU"
-              //   ? "vertical"
-              //   : "horizontal",
-              roundness: 0.4,
-            },
-          },
-          layout: {
-            randomSeed: 2000,
-            // hierarchical: {
-            //   direction: "UD",
-            // },
-          },
-          physics: { enabled: true },
-        }}
-      >
-        {Object.values(graph.nodes).map((n) => {
-          const color =
-            selectedNodeIds.indexOf(n.id) !== -1
-              ? "#79C900"
-              : visibleNodeIds.indexOf(n.id) !== -1
-              ? "#2B7CE9"
-              : "#97C2FC";
-          return (
-            <Node key={`${n.id}`} id={n.id} label={n.name} color={color} />
-          );
-        })}
-        {Object.values(graph.edges).map((e) => (
-          <Edge
-            key={e.id}
-            id={e.id}
-            from={e.from}
-            to={e.to}
-            length={e.length}
-            dashes={e.dashed}
-          />
-        ))}
-      </Network>
+      {graph && graph.nodes && Object.values(graph.nodes).length > 0 && (
+        <Graph
+          key={version}
+          graph={graph}
+          options={options}
+          getNetwork={(network: any) => {
+            network.on("click", (params: any) => {
+              if (nodeSelected && params.nodes[0]) {
+                nodeSelected(params.nodes[0], params.event.srcEvent.shiftKey);
+              }
+            });
+
+            network.on("doubleClick", (params: any) => {
+              if (params.nodes.length == 1) {
+                if (network.isCluster(params.nodes[0]) == true) {
+                  network.openCluster(params.nodes[0]);
+                }
+              }
+            });
+
+            if (!settings.clusteringEnabled) {
+              return;
+            }
+
+            //  if you want access to vis.js network api you can set the state in a parent component using this property
+            let clusterOptionsByData;
+            for (var i = 0; i < uniqueTypes.length; i++) {
+              var type = uniqueTypes[i];
+              clusterOptionsByData = {
+                joinCondition: function (childOptions: any) {
+                  return (
+                    childOptions.type == type &&
+                    visibleNodeIds.indexOf(childOptions.id) === -1
+                  );
+                },
+                processProperties: function (
+                  clusterOptions: any,
+                  childNodes: any
+                ) {
+                  var totalMass = 0;
+                  for (var i = 0; i < childNodes.length; i++) {
+                    totalMass += childNodes[i].mass;
+                  }
+                  clusterOptions.mass = Math.log(totalMass);
+                  return clusterOptions;
+                },
+                clusterNodeProperties: {
+                  id: "cluster:" + type,
+                  color: typesColorMap[type],
+                  label: "type:" + type,
+                  shape: "box",
+                  margin: 10,
+                },
+              };
+              network.cluster(clusterOptionsByData);
+            }
+          }}
+        />
+      )}
     </>
   );
 };

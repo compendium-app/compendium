@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { Alert, Collapse, Drawer, List, Spin, Typography } from "antd";
+import { Alert, Collapse, Drawer, List, Spin } from "antd";
 import { QueryNodeResult, QUERY_NODE } from "../queries/query-node";
+import { getNodeTypesColorMap } from "../helpers/node.helper";
+import { Node } from "../queries/query-node";
+import { NodeDetailDrawerNodes } from "./node-detail-drawer-nodes";
 
 interface NodeDetailDrawerProps {
   nodeId: string;
@@ -16,6 +19,17 @@ export const NodeDetailDrawer = ({
     variables: { id: nodeId },
   });
 
+  let nodeDependencies: Node[] =
+    data?.node?.dependencies.filter((dep) => dep.node).map((dep) => dep.node) ||
+    [];
+  let nodeDependants: Node[] =
+    data?.node?.dependants.filter((dep) => dep.node).map((dep) => dep.node) ||
+    [];
+
+  const typesColorMap = getNodeTypesColorMap(
+    nodeDependencies.concat(nodeDependants)
+  );
+
   const items = getContentItemsForObject(data?.node?.metadata);
   return (
     <Drawer
@@ -30,46 +44,31 @@ export const NodeDetailDrawer = ({
       {data && !data.node && (
         <Alert type="warning" message={`Node '${nodeId}' not found`} />
       )}
-      {data?.node && (
-        <Collapse>
-          <Collapse.Panel
-            key="dependencies"
-            header={`Dependencies (${data?.node?.dependencies.length})`}
-          >
-            <List
-              dataSource={data?.node?.dependencies}
-              renderItem={(i) => (
-                <List.Item key={i.node.id}>
-                  <Typography.Link
-                    href="#"
-                    onClick={() => onNodeSelected(i.node.id)}
-                  >
-                    {i.node?.name}
-                  </Typography.Link>
-                </List.Item>
-              )}
-            />
-          </Collapse.Panel>
-          <Collapse.Panel
-            key="dependendants"
-            header={`Dependants (${data?.node?.dependants.length})`}
-          >
-            <List
-              dataSource={data?.node?.dependants}
-              renderItem={(i) => (
-                <List.Item key={i.node.id}>
-                  <Typography.Link
-                    href="#"
-                    onClick={() => onNodeSelected(i.node.id)}
-                  >
-                    {i.node?.name}
-                  </Typography.Link>
-                </List.Item>
-              )}
-            />
+      {data?.node?.type && (
+        <Collapse defaultActiveKey="type">
+          <Collapse.Panel key="type" header={`Type`}>
+            {data?.node?.type.name}
           </Collapse.Panel>
         </Collapse>
       )}
+      <NodeDetailDrawerNodes
+        panelKey={"dependencies"}
+        inputNodes={nodeDependencies}
+        header={`Dependencies (${nodeDependencies.length})`}
+        searchPlaceholder={"Search in dependencies"}
+        typesColorMap={typesColorMap}
+        onNodeSelected={onNodeSelected}
+        onClose={onClose}
+      ></NodeDetailDrawerNodes>
+      <NodeDetailDrawerNodes
+        panelKey={"dependants"}
+        inputNodes={nodeDependants}
+        header={`Dependants (${nodeDependants.length})`}
+        searchPlaceholder={"Search in dependants"}
+        typesColorMap={typesColorMap}
+        onNodeSelected={onNodeSelected}
+        onClose={onClose}
+      ></NodeDetailDrawerNodes>
     </Drawer>
   );
 };

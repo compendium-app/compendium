@@ -1,19 +1,24 @@
 import { Layout } from "antd";
 import "./App.css";
-
 import { IndexPage } from "./pages/Index";
+import { Settings } from "./components/settings";
+import { SettingsContext } from "./contexts/settings";
+import { useState } from "react";
 
 function App() {
+  const [settings, setSettings] = useState({
+    clusteringEnabled: true,
+  });
+
   return (
-    <Layout style={{ height: "100%" }}>
-      {/* <Layout.Header>aaa</Layout.Header> */}
-      {/* <Layout>
-        <Layout.Sider theme="light">aaa</Layout.Sider> */}
-      <Layout.Content>
-        <IndexPage />
-      </Layout.Content>
-      {/* </Layout> */}
-    </Layout>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
+      <Settings />
+      <Layout style={{ height: "100%" }}>
+        <Layout.Content>
+          <IndexPage />
+        </Layout.Content>
+      </Layout>
+    </SettingsContext.Provider>
   );
 }
 

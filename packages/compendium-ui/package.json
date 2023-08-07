@@ -26,11 +26,8 @@
     "./dist/style.css": "./dist/style.css"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@apollo/client": "^3.7.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0",
-    "@lifeomic/react-vis-network": "^1.1.0",
     "antd": "^4.23.6",
     "aws-appsync": "^4.1.5",
     "aws-appsync-auth-link": "^3.0.7",
@@ -39,6 +36,11 @@
     "graphql": "^15.8.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.40",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-graph-vis": "^1.0.7",
+    "react-router-dom": "^6.3.0",
+    "string-hash": "^1.1.3",
     "vis-data": "^7.1.4",
     "vis-network": "^9.1.2",
     "vis-react": "^0.5.1"
@@ -52,6 +54,8 @@
     "@types/node": "^16.11.27",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
+    "@types/string-hash": "^1.1.1",
+    "@types/uuid": "^9.0.2",
     "@vitejs/plugin-react": "^3.0.1",
     "c8": "^7.12.0",
     "eslint": "^8.33.0",

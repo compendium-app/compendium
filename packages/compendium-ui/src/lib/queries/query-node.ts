@@ -8,6 +8,11 @@ export interface Depend {
 interface NodeMetadata {
   description: string;
 }
+
+interface Type {
+  id: string;
+  name: string;
+}
 export interface Node {
   id: string;
   name: string;
@@ -15,6 +20,7 @@ export interface Node {
   version: string;
   dependencies: Depend[];
   dependants: Depend[];
+  type: Type;
 }
 export type QueryNodeResult = { node?: Node };
 
@@ -29,12 +35,20 @@ export const QUERY_NODE = gql`
         ${metadataFields}
       }
       version
+      type {
+        id
+        name
+      }
       dependencies {
         dependantVersion
         node {
           id
           name
           version
+          type {
+            id
+            name
+          }
           metadata {
             ${metadataFields}
           }
@@ -45,6 +59,10 @@ export const QUERY_NODE = gql`
         node {
           id
           name
+          type {
+            id
+            name
+          }
           metadata {
             ${metadataFields}
           }
