@@ -1,0 +1,17 @@
+
+name: Compendium UI CI/CD
+
+on: 
+  push:
+    # branches:
+    # - main
+    paths:
+    - 'packages/compendium-ui/**'
+    
+jobs:
+  call-common-workflow:
+    uses: ./.github/workflows/common.yml
+    with:
+      target-dir: compendium-ui
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,5 @@
 {
-  "name": "@compendium-app/compendium-ui",
+  "name": "@zatkoa/compendium-ui",
   "description": "Compendium ui to display network of nodes from stored data",
   "version": "0.4.0",
   "license": "MIT",
