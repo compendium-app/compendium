@@ -1,0 +1,17 @@
+
+name: Compendium CDK CI/CD
+
+on: 
+  push:
+    branches:
+    - main
+    paths:
+    - 'packages/compendium-cdk/**'
+    
+jobs:
+  call-common-workflow:
+    uses: ./.github/workflows/common.yml
+    with:
+      target-dir: compendium-cdk
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

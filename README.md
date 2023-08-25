@@ -26,3 +26,14 @@ To build cdk construct run:
 You can copy env.js.example to packages/compendium-ui folder and run following command to test compendium react component directly in package workspace (withou example site):
 
 ### `npm run dev -w packages/compendium-ui`
+
+
+## Release management
+
+The repository contains GitHub workflow to publish packages to the npm registry after a successful merge to the main branch. CI/CD pipeline is triggered only when changes are made to the specific package (e.g. `packages/compendium-cdk`). To publish a new version of the package, follow the next steps:
+
+- Implement changes in the new branch
+- Increase the version of your package in `package.json`, following [semantic versioning](https://semver.org/) (!important, otherwise package with the wrong version will be published)
+- Alternatively you can use `npm version <update-type> -w <workspace-of-your-package>` command, see [updating-your-published-package-version-number](https://docs.npmjs.com/updating-your-published-package-version-number)
+- Create a Pull Request to merge your branch with the main
+- After merging to the main branch, CI/CD pipeline does the rest
