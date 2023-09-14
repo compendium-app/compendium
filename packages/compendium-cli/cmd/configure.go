@@ -95,8 +95,9 @@ func configure(ctx context.Context, filename string) (err error) {
 		}, &res)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Printf("started adding nodeType: %s %s\n", res.Id, res.Name)
 		}
-		fmt.Printf("started adding nodeType: %s %s\n", res.Id, res.Name)
 	}
 
 	return
