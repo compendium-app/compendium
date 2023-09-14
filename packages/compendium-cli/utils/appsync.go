@@ -19,6 +19,7 @@ func GetAppSyncClient() (client *appsync.Client, err error) {
 func GetAppSyncClientWithURL(graphqlURL string) (client *appsync.Client, err error) {
 	sess, err := session.NewSession()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	signer := v4.NewSigner(sess.Config.Credentials)
@@ -29,6 +30,7 @@ func GetAppSyncClientWithURL(graphqlURL string) (client *appsync.Client, err err
 func RunAppSyncQuery(ctx context.Context, client *appsync.Client, query string, vars map[string]interface{}, response interface{}) (err error) {
 	variablesData, err := json.Marshal(vars)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	variables := json.RawMessage(variablesData)
@@ -38,6 +40,7 @@ func RunAppSyncQuery(ctx context.Context, client *appsync.Client, query string, 
 		Variables: &variables,
 	})
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	if res.Errors != nil {
@@ -47,6 +50,7 @@ func RunAppSyncQuery(ctx context.Context, client *appsync.Client, query string, 
 
 	err = res.DataAs(response)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	return

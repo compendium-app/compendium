@@ -74,8 +74,8 @@ func configure(ctx context.Context, filename string) (err error) {
 	}
 
 	query := `
-    mutation putNodeTypes {
-        putNodeType(type: {id: "<type-id>", name: "<type-name>"}) {
+    mutation putNodeTypes($id: ID!, $name: String!) {
+        putNodeType(type: {id: $id, name: $name}) {
             id
             name
         }
@@ -93,7 +93,10 @@ func configure(ctx context.Context, filename string) (err error) {
 			"id":   nodeType.Id,
 			"name": nodeType.Name,
 		}, &res)
-		fmt.Printf("started adding nodeType: %s %s", res.Id, res.Name)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("started adding nodeType: %s %s\n", res.Id, res.Name)
 	}
 
 	return
