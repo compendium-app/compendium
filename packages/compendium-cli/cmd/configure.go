@@ -14,7 +14,7 @@ import (
 
 // NOTE: for now only puts new nodeTypes, but use it for other configuration needs
 
-// ConfigureCommand ...
+// Upserts/Puts nodeType nodes into database
 var ConfigureCommand = cli.Command{
 	Name: "configure",
 	Flags: []cli.Flag{

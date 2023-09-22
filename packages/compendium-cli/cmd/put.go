@@ -12,7 +12,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// PutCommand ...
+// Upserts/Puts new nodes into database as specified in yaml file
 var PutCommand = cli.Command{
 	Name: "put",
 	Flags: []cli.Flag{

@@ -1,27 +1,9 @@
 nodeTypes:
   - id: services
     name: Services
-  - id: service-versions
-    name: AWS services in specific version
-  - id: service-deployments
-    name: AWS services deployment
   - id: npm-packages
     name: NPM packages
-  - id: npm-package-versions
-    name: NPM package versions
   - id: docker-images
     name: Docker images
-  - id: docker-image-versions
-    name: Docker image versions
   - id: environments
     name: Environments
-  - id: ci-templates
-    name: CI templates
-  - id: teams
-    name: Teams
-  - id: dev-teams
-    name: Dev teams
-  - id: services-onprem
-    name: Onprem services
-  - id: services-external
-    name: External services
