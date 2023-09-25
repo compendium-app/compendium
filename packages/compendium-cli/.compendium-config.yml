@@ -1,0 +1,9 @@
+nodeTypes:
+  - id: services
+    name: Services
+  - id: npm-packages
+    name: NPM packages
+  - id: docker-images
+    name: Docker images
+  - id: environments
+    name: Environments

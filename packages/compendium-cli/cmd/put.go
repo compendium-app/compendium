@@ -12,7 +12,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// PutCommand ...
+// Upserts/Puts new nodes into database as specified in yaml file
 var PutCommand = cli.Command{
 	Name: "put",
 	Flags: []cli.Flag{
@@ -91,7 +91,11 @@ func putFile(ctx context.Context, filename string) (err error) {
 		"nodes": nodes,
 	}, &res)
 
-	fmt.Println("started execution", res.ExecutionArn)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("started adding nodes: %s\n", res.ExecutionArn)
+	}
 
 	return
 }
