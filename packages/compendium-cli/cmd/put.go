@@ -91,7 +91,11 @@ func putFile(ctx context.Context, filename string) (err error) {
 		"nodes": nodes,
 	}, &res)
 
-	fmt.Println("started execution", res.ExecutionArn)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("started adding nodes: %s\n", res.ExecutionArn)
+	}
 
 	return
 }
