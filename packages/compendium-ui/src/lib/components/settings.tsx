@@ -22,13 +22,23 @@ export const Settings = () => {
             <List bordered>
               <List.Item>
                 <Typography.Text mark>click on the node</Typography.Text> -
-                select specific node
+                focus specific node (open drawer on the right side)
+              </List.Item>
+              <List.Item>
+                <Typography.Text mark>double-click on the node</Typography.Text> -
+                select specific node (this will reset all previous selection)
               </List.Item>
               <List.Item>
                 <Typography.Text mark>
                   shift + click on the node
                 </Typography.Text>{" "}
                 - select another node
+              </List.Item>
+              <List.Item>
+                <Typography.Text mark>
+                  shift + click on the already selected node
+                </Typography.Text>{" "}
+                - unselect node
               </List.Item>
               <List.Item>
                 <Typography.Text mark>

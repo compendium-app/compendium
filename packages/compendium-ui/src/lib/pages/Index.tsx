@@ -64,12 +64,38 @@ export const IndexPage = () => {
           // key={JSON.stringify(selection)}
           nodeIds={selection.visibleNodes}
           selectedNodeId={selection.selectedNode}
-          nodeSelected={(id, shift) => {
+          nodeSelected={(id, shift, resetVisibleNodes) => {
+            // If `resetVisibleNodes` is true, it will set only currently selected node as visible
+            if (resetVisibleNodes) {
+              setNodeSelection({
+                selectedNode: id,
+                visibleNodes: [id],
+              });
+              return;
+            }
+
+            let newVisibleNodes = [...(selection.visibleNodes || [])];
+
+            //  If shift key is not pressed, simply select the node
+            if (!shift) {
+              setNodeSelection({
+                selectedNode: id,
+                visibleNodes: newVisibleNodes,
+              });
+              return;
+            }
+
+            // If we want another node to be visible but this node has been already selected - unselect it
+            const nodeIsAlreadyVisible = newVisibleNodes.indexOf(id) !== -1;
+            if (nodeIsAlreadyVisible) {
+              newVisibleNodes = newVisibleNodes.filter((n) => n !== id);
+            } else {
+              newVisibleNodes = [id, ...newVisibleNodes];
+            }
+
             setNodeSelection({
               selectedNode: id,
-              visibleNodes: shift
-                ? [id, ...(selection.visibleNodes || [])]
-                : selection.visibleNodes,
+              visibleNodes: newVisibleNodes,
             });
           }}
         />
