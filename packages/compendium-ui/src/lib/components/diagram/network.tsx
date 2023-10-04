@@ -34,7 +34,11 @@ interface DiagramNetworkProps {
   typesColorMap: Record<string, string>;
   uniqueTypes: string[];
   graph: Graph;
-  nodeSelected?: (node: string, shift: boolean) => void;
+  nodeSelected?: (
+    node: string,
+    shift: boolean,
+    resetVisibleNodes: boolean
+  ) => void;
 }
 
 export const DiagramNetwork = (props: DiagramNetworkProps) => {
@@ -81,7 +85,13 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
           getNetwork={(network: any) => {
             network.on("click", (params: any) => {
               if (nodeSelected && params.nodes[0]) {
-                nodeSelected(params.nodes[0], params.event.srcEvent.shiftKey);
+                const isShiftKeyPressed = params.event.srcEvent.shiftKey;
+                const resetVisibleNodes = false;
+                nodeSelected(
+                  params.nodes[0],
+                  isShiftKeyPressed,
+                  resetVisibleNodes
+                );
               }
             });
 
@@ -89,6 +99,14 @@ export const DiagramNetwork = (props: DiagramNetworkProps) => {
               if (params.nodes.length == 1) {
                 if (network.isCluster(params.nodes[0]) == true) {
                   network.openCluster(params.nodes[0]);
+                } else if (nodeSelected) {
+                  const resetVisibleNodes = true;
+                  const isShiftKeyPressed = false;
+                  nodeSelected(
+                    params.nodes[0],
+                    isShiftKeyPressed,
+                    resetVisibleNodes
+                  );
                 }
               }
             });

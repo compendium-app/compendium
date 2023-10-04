@@ -10,7 +10,11 @@ import { DataEdge, DataNode, DiagramNetwork } from "./network";
 interface DiagramProps {
   nodeIds: string[];
   selectedNodeId?: string;
-  nodeSelected?: (node: string, shift: boolean) => void;
+  nodeSelected?: (
+    node: string,
+    shift: boolean,
+    resetVisibleNodes: boolean
+  ) => void;
 }
 
 export const Diagram = (props: DiagramProps) => {
@@ -18,11 +22,13 @@ export const Diagram = (props: DiagramProps) => {
   const { data } = useQueryNodes({ ids: nodeIds });
 
   const allNodes =
-    data?.filter((n) => n).flatMap((baseNode) => [
-      ...baseNode.dependencies.map((n: any) => n.node),
-      ...baseNode.dependants.map((n: any) => n.node),
-      baseNode,
-    ]) || [];
+    data
+      ?.filter((n) => n)
+      .flatMap((baseNode) => [
+        ...baseNode.dependencies.map((n: any) => n.node),
+        ...baseNode.dependants.map((n: any) => n.node),
+        baseNode,
+      ]) || [];
 
   const typesColorMap = getNodeTypesColorMap(allNodes);
   const uniqueTypes = getUniqueTypes(allNodes);
@@ -102,9 +108,9 @@ export const Diagram = (props: DiagramProps) => {
         typesColorMap={typesColorMap}
         uniqueTypes={uniqueTypes}
         graph={graph}
-        nodeSelected={(node, shift) => {
+        nodeSelected={(node, shift, resetVisibleNodes) => {
           if (nodeSelected) {
-            nodeSelected(node, shift);
+            nodeSelected(node, shift, resetVisibleNodes);
           }
         }}
       />
