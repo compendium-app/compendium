@@ -1,0 +1,14 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-gray);
+  padding: 8px 50px;
+  height: max-content;
+  background-color: white;
+}
+
+.content {
+  padding: 0px 50px;
+  height: 100vh;
+  background-color: white;
+}
