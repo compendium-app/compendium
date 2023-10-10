@@ -1,0 +1,11 @@
+.node-link {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border-gray);
+  border-radius: 3px;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+

@@ -9,7 +9,7 @@ interface NodeMetadata {
   description: string;
 }
 
-interface Type {
+export interface Type {
   id: string;
   name: string;
 }
