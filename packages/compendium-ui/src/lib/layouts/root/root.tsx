@@ -3,6 +3,7 @@ import Layout, { Content, Header } from "antd/lib/layout/layout";
 import { Link, Outlet } from "react-router-dom";
 
 import "./root.css";
+import logo from '../../../../public/compendium-logo.svg'
 
 import type React from "react";
 
@@ -13,7 +14,7 @@ const RootLayout = () => {
         <Header className="navigation">
           <Link to={"/"}>
             <Image
-              src={"/compendium-logo.svg"}
+              src={logo}
               preview={false}
               width={170}
               height={"auto"}

@@ -11,7 +11,9 @@ const CategoryLink: FC<CategoryLinkProps> = ({ title, imgUrl, href }) => {
   return (
     <Link className="category-link" to={href}>
       <div className="category-link-image-container">
-        <Image className="category-link-img" preview={false} src={imgUrl} />
+        {imgUrl && (
+          <Image className="category-link-img" preview={false} src={imgUrl} />
+        )}
       </div>
       <h3 className="category-title">{title}</h3>
     </Link>

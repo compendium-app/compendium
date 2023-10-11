@@ -28,7 +28,7 @@ const Homepage = () => {
           <CategoryLink
             key={category.id}
             title={category.name}
-            imgUrl={category.name}
+            imgUrl={''}
             href={`/node-type/${category.id}`}
           />
         ))}
