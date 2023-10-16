@@ -8,7 +8,7 @@
   },
   "workspaces": [
     "packages/*",
-    "sites/*"
+    "examples/*"
   ],
   "devDependencies": {
     "@types/node": "^18.13.0",

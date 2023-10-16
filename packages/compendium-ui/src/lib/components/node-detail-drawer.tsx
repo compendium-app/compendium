@@ -4,6 +4,7 @@ import { QueryNodeResult, QUERY_NODE } from "../queries/query-node";
 import { getNodeTypesColorMap } from "../helpers/node.helper";
 import { Node } from "../queries/query-node";
 import { NodeDetailDrawerNodes } from "./node-detail-drawer-nodes";
+import Sider from "antd/lib/layout/Sider";
 
 interface NodeDetailDrawerProps {
   nodeId: string;
@@ -33,10 +34,16 @@ export const NodeDetailDrawer = ({
   const items = getContentItemsForObject(data?.node?.metadata);
   return (
     <Drawer
+      style={{ height: "calc(100% - 81px)", top: "81px" }}
       mask={false}
       open={true}
       onClose={() => onClose()}
       title={data?.node?.name}
+      contentWrapperStyle={{
+        boxShadow: "none",
+        borderLeft: "1px solid var(--border-gray)",
+        borderTop: "1px solid var(--border-gray)",
+      }}
     >
       {loading && <Spin />}
       {error && <Alert type="error" message={error.message} />}
@@ -116,7 +123,7 @@ const getContentItemsForObject = (obj: any): React.ReactNode[] | null => {
       }
     }
     if (items.length > 0) {
-      return [<Collapse defaultActiveKey={keys}>{items}</Collapse>];
+      return [<Collapse key="defaultCollapse" defaultActiveKey={keys}>{items}</Collapse>];
     }
   }
 
